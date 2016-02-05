@@ -1,0 +1,17 @@
+FileVersion: 1
+Price:
+
+  #创建地标的价格
+  create: 300
+  
+  #重命名的价格
+  rename: 200
+  
+  #改变地标位置的价格
+  relocation: 300
+  
+  #删除地标的价格（负为退钱）
+  delete: -50
+  
+  #添加地标欢迎信息的价格
+  addDescription: 50

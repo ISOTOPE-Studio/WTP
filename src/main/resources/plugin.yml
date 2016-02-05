@@ -1,0 +1,38 @@
+﻿name: WTP
+main: cc.isotopestudio.WTP.wtp.WTP
+
+author: Mars
+description: Public Teleportion
+website: http://isotopestudio.cc
+version: 1.0
+commands:
+  wtp:
+    description: 公共地标玩家管理菜单
+    usage: /<command>
+    permission: wtp.control
+    permission-message: 你没有权限
+  wlist:
+    description: 公共地标列表
+    usage: /<command>
+    permission: wtp.list
+    permission-message: 你没有权限
+  w:
+    description: 传送到
+    usage: /<command>
+    permission: wtp.teleport
+    permission-message: 你没有权限
+  wtpadmin:
+    description: 公共地标管理员菜单
+    usage: /<command>
+    permission: wtp.admin
+    permission-message: 你没有权限
+permission:
+  wtp.*:
+    description: 允许使用/wtp, /w, /wlist
+    children:
+    - wtp.control: true
+    - wtp.list: true
+    - wtp.teleport: true
+  wtp.admin:
+    description: 允许使用管理命令
+    default: op
