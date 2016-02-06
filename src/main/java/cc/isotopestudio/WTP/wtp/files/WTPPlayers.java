@@ -7,8 +7,18 @@ import org.bukkit.entity.Player;
 import cc.isotopestudio.WTP.wtp.WTP;
 
 public class WTPPlayers {
+	private final WTP plugin;
 
-	public static int returnPlayerSpare(Player player, WTP plugin) {
+	public WTPPlayers(WTP plugin) {
+		this.plugin = plugin;
+	}
+
+	public int getPlayerWarpNum(Player player) {
+		List<String> warpsList = plugin.getPlayersData().getStringList(player.getName() + ".warps");
+		return warpsList.size();
+	}
+
+	public int getPlayerWarpLim(Player player) {
 		int limit = WTPConfig.getLimit(0);
 		if (player.isOp()) {
 			limit = WTPConfig.getLimit(6);
@@ -19,15 +29,18 @@ public class WTPPlayers {
 					break;
 				}
 			}
-		List<String> warpsList = plugin.getPlayersData().getStringList(player.getName() + ".warps");
-		player.sendMessage(limit+" "+warpsList.size());
-		return limit - warpsList.size();
+		return limit;
 	}
 
-	public static String returnPlayerSpareString(Player player, WTP plugin) {
-		int limit = returnPlayerSpare(player, plugin);
-		if (limit >= 0)
+	public int getPlayerSpare(Player player) {
+		return getPlayerWarpLim(player) - getPlayerWarpNum(player);
+	}
+
+	public String getPlayerSpareString(Player player) {
+		if (getPlayerWarpLim(player) != -1) {
+			int limit = getPlayerSpare(player);
 			return limit + "";
+		}
 		else
 			return "нчоч";
 	}

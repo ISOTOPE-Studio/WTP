@@ -8,13 +8,18 @@ import org.bukkit.entity.Player;
 
 import cc.isotopestudio.WTP.wtp.WTP;
 import cc.isotopestudio.WTP.wtp.files.WTPConfig;
+import cc.isotopestudio.WTP.wtp.files.WTPData;
 import cc.isotopestudio.WTP.wtp.files.WTPPlayers;
 
 public class CommandWtp implements CommandExecutor {
 	private final WTP plugin;
+	private final WTPData wtpData;
+	private final WTPPlayers wtpPlayers;
 
 	public CommandWtp(WTP plugin) {
 		this.plugin = plugin;
+		wtpData = new WTPData(plugin);
+		wtpPlayers = new WTPPlayers(plugin);
 	}
 
 	@Override
@@ -24,8 +29,32 @@ public class CommandWtp implements CommandExecutor {
 			if (cmd.getName().equalsIgnoreCase("wtp")) {
 				if (args[0].equals("create")) {
 					if (args.length == 2) {
-						WTPPlayers.returnPlayerSpare(player, plugin);
-
+						if (wtpPlayers.getPlayerSpare(player) <= 0
+								&& wtpPlayers.getPlayerWarpLim(player) != -1) {
+							sender.sendMessage(
+									new StringBuilder().append(ChatColor.RED).append("你不能再创建更多的地标了").toString());
+							return true;
+						}
+						if (!args[1].matches("^[a-zA-Z]*")) {
+							sender.sendMessage(
+									new StringBuilder().append(ChatColor.RED).append("名字只能为英文字母").toString());
+							return true;
+						}
+						if (args[1].length() >= 10) {
+							sender.sendMessage(
+									new StringBuilder().append(ChatColor.RED).append("名字不能超过十个字母").toString());
+							return true;
+						}
+						
+						if (WTP.econ.getBalance(player.getName()) < WTPConfig.createFee) {
+							sender.sendMessage(new StringBuilder().append(ChatColor.RED).append("你的金钱不足").toString());
+							return true;
+						}
+						WTP.econ.withdrawPlayer(player.getName(), WTPConfig.createFee);
+						sender.sendMessage(new StringBuilder().append(ChatColor.AQUA).append("成功创建！").toString());
+						
+						wtpData.addWarp(player, args[1]);
+						
 						return true;
 					} else {
 						sender.sendMessage((new StringBuilder()).append(ChatColor.RED).append("/wtp create <地标名字>")
@@ -70,13 +99,13 @@ public class CommandWtp implements CommandExecutor {
 					.append(ChatColor.RESET).append(ChatColor.YELLOW).append("是其他玩家看到地标的简短中文介绍").toString());
 			if (sender instanceof Player)
 				sender.sendMessage((new StringBuilder()).append(ChatColor.GREEN)
-						.append("你还可以创建" + WTPPlayers.returnPlayerSpareString((Player) sender, plugin) + "个地标")
+						.append("你还可以创建" + wtpPlayers.getPlayerSpareString((Player) sender) + "个地标")
 						.toString());
 			sender.sendMessage(
 					(new StringBuilder(plugin.prefix)).append(ChatColor.AQUA).append("== 命令菜单 ==").toString());
 			sender.sendMessage((new StringBuilder()).append(ChatColor.GOLD).append("/wtp create <地标名字>")
 					.append(ChatColor.GRAY).append(" - ").append(ChatColor.LIGHT_PURPLE)
-					.append("花费" + WTPConfig.createFee + "创建一个公共地标(名字强烈建议不要输入中文)").toString());
+					.append("花费" + WTPConfig.createFee + "创建一个公共地标").toString());
 			sender.sendMessage(new StringBuilder().append(ChatColor.GOLD).append("/wtp name <地标名字> <地标别名>")
 					.append(ChatColor.GRAY).append(" - ").append(ChatColor.LIGHT_PURPLE)
 					.append("花费" + WTPConfig.aliasFee + "给公共地标添加别名").toString());
