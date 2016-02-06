@@ -4,14 +4,29 @@ Price:
   #创建地标的价格
   create: 300
   
-  #重命名的价格
-  rename: 200
+  #添加别名的价格
+  alias: 10
+  
+  #添加欢迎信息的价格
+  welcome: 20
   
   #改变地标位置的价格
   relocation: 300
   
   #删除地标的价格（负为退钱）
   delete: -50
-  
-  #添加地标欢迎信息的价格
-  addDescription: 50
+
+Limitation:
+
+  #每个玩家可创建的地标的个数
+  #默认: 无需权限
+  #VIP权限: WTP.create.VIP1, WTP.create.VIP2, 以此类推
+  #目前只提供五个VIP权限
+  #-1为无限制
+  create: 
+    default: 2
+    VIP1: 5
+    VIP2: 8
+    VIP3: 10
+    VIP4: 20
+    admin: -1

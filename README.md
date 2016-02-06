@@ -35,7 +35,7 @@ http://www.mcbbs.net/thread-552042-1-1.html
 
 /wtp del <地标名>  - 移除一个公共地标
 
-### [管理]
+### [ 管理 ]
 
 /wtpadmin info <地标名>   - 查看一个公共地标的信息
 

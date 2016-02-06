@@ -8,6 +8,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import cc.isotopestudio.WTP.wtp.commands.*;
+import cc.isotopestudio.WTP.wtp.files.WTPConfig;
 
 public final class WTP extends JavaPlugin {
 	public final String version = "v1.0";
@@ -39,21 +41,27 @@ public final class WTP extends JavaPlugin {
 		}
 
 		try {
-			getPlayersData().save(dataFile);
+			getWarpsData().save(warpsFile);
+			getPlayersData().save(playersFile);
 		} catch (IOException e) {
 		}
 
 		// PluginManager pm = this.getServer().getPluginManager();
-
-		//this.getCommand("sd").setExecutor(new SJRedeemCommand(this));
-		//this.getCommand("sda").setExecutor(new SJRedeemCommand(this));
+		WTPConfig.update(this);
+		this.getCommand("w").setExecutor(new CommandW(this));
+		this.getCommand("wlist").setExecutor(new CommandWlist(this));
+		this.getCommand("wtp").setExecutor(new CommandWtp(this));
+		this.getCommand("wtpadmin").setExecutor(new CommandWtpadmin(this));
 
 		getLogger().info("公共地标 成功加载!");
+		getLogger().info("公共地标 由ISOTOPE Studio制作!");
+		getLogger().info("http://isotopestudio.cc");
 	}
 
 	public void onReload() {
 		reloadPlayersData();
 		this.reloadConfig();
+		WTPConfig.update(this);
 	}
 
 	@Override
@@ -62,29 +70,57 @@ public final class WTP extends JavaPlugin {
 		getLogger().info("公共地标 成功卸载!");
 	}
 
-	private File dataFile = null;
-	private FileConfiguration data = null;
+	private File playersFile = null;
+	private FileConfiguration playersData = null;
 
 	public void reloadPlayersData() {
-		if (dataFile == null) {
-			dataFile = new File(getDataFolder(), "wtpData.yml");
+		if (playersFile == null) {
+			playersFile = new File(getDataFolder(), "players.yml");
 		}
-		data = YamlConfiguration.loadConfiguration(dataFile);
+		playersData = YamlConfiguration.loadConfiguration(playersFile);
 	}
 
 	public FileConfiguration getPlayersData() {
-		if (data == null) {
+		if (playersData == null) {
 			reloadPlayersData();
 		}
-		return data;
+		return playersData;
 	}
 
 	public void savePlayersData() {
-		if (data == null || dataFile == null) {
+		if (playersData == null || playersFile == null) {
 			return;
 		}
 		try {
-			getPlayersData().save(dataFile);
+			getPlayersData().save(playersFile);
+		} catch (IOException ex) {
+			getLogger().info("地标文件保存失败！");
+		}
+	}
+
+	private File warpsFile = null;
+	private FileConfiguration warpsData = null;
+
+	public void reloadWarpsData() {
+		if (warpsFile == null) {
+			warpsFile = new File(getDataFolder(), "warps.yml");
+		}
+		warpsData = YamlConfiguration.loadConfiguration(warpsFile);
+	}
+
+	public FileConfiguration getWarpsData() {
+		if (warpsData == null) {
+			reloadWarpsData();
+		}
+		return warpsData;
+	}
+
+	public void saveWarpsData() {
+		if (warpsData == null || warpsFile == null) {
+			return;
+		}
+		try {
+			getWarpsData().save(warpsFile);
 		} catch (IOException ex) {
 			getLogger().info("地标文件保存失败！");
 		}
