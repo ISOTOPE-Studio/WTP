@@ -12,9 +12,6 @@ Price:
   
   #改变地标位置的价格
   relocation: 300
-  
-  #删除地标的价格（负为退钱）
-  delete: -50
 
 Limitation:
 

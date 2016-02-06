@@ -2,6 +2,10 @@ package cc.isotopestudio.WTP.wtp.files;
 
 import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import cc.isotopestudio.WTP.wtp.WTP;
@@ -11,6 +15,28 @@ public class WTPPlayers {
 
 	public WTPPlayers(WTP plugin) {
 		this.plugin = plugin;
+	}
+
+	public void tpWarp(Player player, String name) {
+		if (plugin.getWarpsData().isSet(name)) {
+			World world = Bukkit.getServer().getWorld(plugin.getWarpsData().getString(name + ".world"));
+			Location loc = new Location(world, plugin.getWarpsData().getDouble(name + ".X"),
+					plugin.getWarpsData().getDouble(name + ".Y"), plugin.getWarpsData().getDouble(name + ".Z"),
+					(float) plugin.getWarpsData().getDouble(name + ".yaw"),
+					(float) plugin.getWarpsData().getDouble(name + ".pitch"));
+			player.teleport(loc);
+			StringBuilder msg = new StringBuilder(plugin.prefix);
+			String alias = plugin.getWarpsData().getString(name + ".alias");
+			String welcome = plugin.getWarpsData().getString(name + ".welcome");
+			if (alias != null)
+				msg.append(ChatColor.GOLD).append(alias + ": ");
+			if (msg != null)
+				msg.append(ChatColor.AQUA).append(welcome);
+			player.sendMessage(msg.toString());
+		} else {
+			player.sendMessage(new StringBuilder(plugin.prefix).append(ChatColor.RED).append("地标不存在").toString());
+
+		}
 	}
 
 	public int getPlayerWarpNum(Player player) {
@@ -40,9 +66,16 @@ public class WTPPlayers {
 		if (getPlayerWarpLim(player) != -1) {
 			int limit = getPlayerSpare(player);
 			return limit + "";
-		}
-		else
+		} else
 			return "无限";
+	}
+
+	public boolean isOwner(Player player, String name) {
+		String owner = plugin.getWarpsData().getString(name + ".owner");
+		if (owner != null && owner.equals(player.getName()))
+			return true;
+		else
+			return false;
 	}
 
 }

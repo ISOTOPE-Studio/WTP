@@ -29,8 +29,7 @@ public class CommandWtp implements CommandExecutor {
 			if (cmd.getName().equalsIgnoreCase("wtp")) {
 				if (args[0].equals("create")) {
 					if (args.length == 2) {
-						if (wtpPlayers.getPlayerSpare(player) <= 0
-								&& wtpPlayers.getPlayerWarpLim(player) != -1) {
+						if (wtpPlayers.getPlayerSpare(player) <= 0 && wtpPlayers.getPlayerWarpLim(player) != -1) {
 							sender.sendMessage(
 									new StringBuilder().append(ChatColor.RED).append("你不能再创建更多的地标了").toString());
 							return true;
@@ -45,36 +44,73 @@ public class CommandWtp implements CommandExecutor {
 									new StringBuilder().append(ChatColor.RED).append("名字不能超过十个字母").toString());
 							return true;
 						}
-						
+						if (wtpData.ifWarpExist(args[1])) {
+							sender.sendMessage(new StringBuilder().append(ChatColor.RED)
+									.append("地标" + args[1] + "已经存在，换个名字吧").toString());
+							return true;
+						}
+
 						if (WTP.econ.getBalance(player.getName()) < WTPConfig.createFee) {
 							sender.sendMessage(new StringBuilder().append(ChatColor.RED).append("你的金钱不足").toString());
 							return true;
 						}
 						WTP.econ.withdrawPlayer(player.getName(), WTPConfig.createFee);
-						sender.sendMessage(new StringBuilder().append(ChatColor.AQUA).append("成功创建！").toString());
-						
 						wtpData.addWarp(player, args[1]);
-						
+						sender.sendMessage(new StringBuilder().append(ChatColor.AQUA).append("成功创建！").toString());
 						return true;
 					} else {
 						sender.sendMessage((new StringBuilder()).append(ChatColor.RED).append("/wtp create <地标名字>")
 								.append(ChatColor.GRAY).append(" - ").append(ChatColor.LIGHT_PURPLE)
-								.append("花费" + WTPConfig.createFee + "创建一个公共地标(名字强烈建议不要输入中文)").toString());
+								.append("花费" + WTPConfig.createFee + "创建一个公共地标").toString());
 						return true;
 					}
 				}
-				if (args[0].equals("name")) {
+				
+				if (args[0].equals("alias")) {
 					if (args.length == 3) {
+						if (!wtpPlayers.isOwner(player, args[1])) {
+							sender.sendMessage(new StringBuilder().append(ChatColor.RED).append("这不是你的地标").toString());
+							return true;
+						}
+						if (args[2].length() >= 15) {
+							sender.sendMessage(
+									new StringBuilder().append(ChatColor.RED).append("别名不能超过15个字").toString());
+							return true;
+						}
+						if (WTP.econ.getBalance(player.getName()) < WTPConfig.aliasFee) {
+							sender.sendMessage(new StringBuilder().append(ChatColor.RED).append("你的金钱不足").toString());
+							return true;
+						}
+						WTP.econ.withdrawPlayer(player.getName(), WTPConfig.aliasFee);
+						wtpData.addAlias(args[1], args[2]);
+						sender.sendMessage(new StringBuilder().append(ChatColor.AQUA).append("成功添加别名！").toString());
 						return true;
 					} else {
-						sender.sendMessage(new StringBuilder().append(ChatColor.RED).append("/wtp name <地标名字> <地标别名>")
+						sender.sendMessage(new StringBuilder().append(ChatColor.RED).append("/wtp alias <地标名字> <地标别名>")
 								.append(ChatColor.GRAY).append(" - ").append(ChatColor.LIGHT_PURPLE)
 								.append("花费" + WTPConfig.aliasFee + "给公共地标添加别名").toString());
 						return true;
 					}
 				}
+				
 				if (args[0].equals("msg")) {
 					if (args.length == 3) {
+						if (!wtpPlayers.isOwner(player, args[1])) {
+							sender.sendMessage(new StringBuilder().append(ChatColor.RED).append("这不是你的地标").toString());
+							return true;
+						}
+						if (args[2].length() >= 30) {
+							sender.sendMessage(
+									new StringBuilder().append(ChatColor.RED).append("欢迎信息不能超过30个字").toString());
+							return true;
+						}
+						if (WTP.econ.getBalance(player.getName()) < WTPConfig.welcomeFee) {
+							sender.sendMessage(new StringBuilder().append(ChatColor.RED).append("你的金钱不足").toString());
+							return true;
+						}
+						WTP.econ.withdrawPlayer(player.getName(), WTPConfig.welcomeFee);
+						wtpData.addMsg(args[1], args[2]);
+						sender.sendMessage(new StringBuilder().append(ChatColor.AQUA).append("成功添加别名！").toString());
 						return true;
 					} else {
 						sender.sendMessage(new StringBuilder().append(ChatColor.RED).append("/wtp msg <地标名字> <欢迎信息>")
@@ -83,6 +119,29 @@ public class CommandWtp implements CommandExecutor {
 						return true;
 					}
 				}
+				
+				if (args[0].equals("relocate")) {
+					if (args.length == 2) {
+						if (!wtpPlayers.isOwner(player, args[1])) {
+							sender.sendMessage(new StringBuilder().append(ChatColor.RED).append("这不是你的地标").toString());
+							return true;
+						}
+						if (WTP.econ.getBalance(player.getName()) < WTPConfig.relocationFee) {
+							sender.sendMessage(new StringBuilder().append(ChatColor.RED).append("你的金钱不足").toString());
+							return true;
+						}
+						WTP.econ.withdrawPlayer(player.getName(), WTPConfig.relocationFee);
+						wtpData.relocate(args[1], player);
+						sender.sendMessage(new StringBuilder().append(ChatColor.AQUA).append("成功改变传送点！").toString());
+						return true;
+					} else {
+						sender.sendMessage(new StringBuilder().append(ChatColor.RED).append("/wtp msg <地标名字> <欢迎信息>")
+								.append(ChatColor.GRAY).append(" - ").append(ChatColor.LIGHT_PURPLE)
+								.append("花费" + WTPConfig.welcomeFee + "给公共地标添加欢迎信息").toString());
+						return true;
+					}
+				}
+				
 				if (args[0].equals("about")) {
 					about(sender);
 					return true;
@@ -99,19 +158,21 @@ public class CommandWtp implements CommandExecutor {
 					.append(ChatColor.RESET).append(ChatColor.YELLOW).append("是其他玩家看到地标的简短中文介绍").toString());
 			if (sender instanceof Player)
 				sender.sendMessage((new StringBuilder()).append(ChatColor.GREEN)
-						.append("你还可以创建" + wtpPlayers.getPlayerSpareString((Player) sender) + "个地标")
-						.toString());
+						.append("你还可以创建" + wtpPlayers.getPlayerSpareString((Player) sender) + "个地标").toString());
 			sender.sendMessage(
 					(new StringBuilder(plugin.prefix)).append(ChatColor.AQUA).append("== 命令菜单 ==").toString());
 			sender.sendMessage((new StringBuilder()).append(ChatColor.GOLD).append("/wtp create <地标名字>")
 					.append(ChatColor.GRAY).append(" - ").append(ChatColor.LIGHT_PURPLE)
 					.append("花费" + WTPConfig.createFee + "创建一个公共地标").toString());
-			sender.sendMessage(new StringBuilder().append(ChatColor.GOLD).append("/wtp name <地标名字> <地标别名>")
+			sender.sendMessage(new StringBuilder().append(ChatColor.GOLD).append("/wtp alias <地标名字> <地标别名>")
 					.append(ChatColor.GRAY).append(" - ").append(ChatColor.LIGHT_PURPLE)
 					.append("花费" + WTPConfig.aliasFee + "给公共地标添加别名").toString());
 			sender.sendMessage(new StringBuilder().append(ChatColor.GOLD).append("/wtp msg <地标名字> <欢迎信息>")
 					.append(ChatColor.GRAY).append(" - ").append(ChatColor.LIGHT_PURPLE)
 					.append("花费" + WTPConfig.welcomeFee + "给公共地标添加欢迎信息").toString());
+			sender.sendMessage(new StringBuilder().append(ChatColor.GOLD).append("/wtp relocate <地标名字>")
+					.append(ChatColor.GRAY).append(" - ").append(ChatColor.LIGHT_PURPLE)
+					.append("花费" + WTPConfig.relocationFee + "更改公共地标为当前位置").toString());
 			sender.sendMessage(new StringBuilder().append(ChatColor.GOLD).append("/wtp about").append(ChatColor.GRAY)
 					.append(" - ").append(ChatColor.LIGHT_PURPLE).append("查看插件信息").toString());
 
