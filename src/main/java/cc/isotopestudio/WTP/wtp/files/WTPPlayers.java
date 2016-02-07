@@ -31,10 +31,13 @@ public class WTPPlayers {
 			String alias = wtpData.getAlias(name);
 			String welcome = wtpData.getMsg(name);
 			if (alias != null)
-				msg.append(ChatColor.GOLD).append(alias + ": ");
-			if (msg != null)
+				msg.append(ChatColor.GOLD).append(alias + "  ");
+			if (welcome != null)
 				msg.append(ChatColor.AQUA).append(welcome);
-			player.sendMessage(msg.toString());
+			if (alias == null && welcome == null) {
+				player.sendMessage(msg.append(ChatColor.YELLOW).append("传送到" + name).toString());
+			} else
+				player.sendMessage(msg.toString());
 		} else {
 			player.sendMessage(new StringBuilder(WTP.prefix).append(ChatColor.RED).append("地标不存在").toString());
 
@@ -78,6 +81,10 @@ public class WTPPlayers {
 			return true;
 		else
 			return false;
+	}
+
+	public List<String> getPlayerWarpsList(String player) {
+		return plugin.getPlayersData().getStringList(player + ".warps");
 	}
 
 }

@@ -37,6 +37,25 @@ public class WTPData {
 		UpdateWlist.updateWlist(plugin);
 	}
 
+	public void deleteWarp(String name) {
+		List<String> warpsList = plugin.getPlayersData().getStringList(getOwner(name) + ".warps");
+		int index = 0;
+		for (String temp : warpsList) {
+			if (temp.equals(name)) {
+				warpsList.remove(index);
+				break;
+			}
+			index++;
+		}
+		plugin.getPlayersData().set(getOwner(name) + ".warps", warpsList);
+
+		plugin.getWarpsData().set(name, null);
+		
+		plugin.savePlayersData();
+		plugin.saveWarpsData();
+		UpdateWlist.updateWlist(plugin);
+	}
+
 	public boolean ifWarpExist(String name) {
 		Set<String> list = plugin.getWarpsData().getKeys(false);
 		for (String temp : list) {
@@ -67,19 +86,45 @@ public class WTPData {
 		plugin.saveWarpsData();
 	}
 
+	public String getOwner(String name) {
+		return plugin.getWarpsData().getString(name + ".owner");
+	}
+
 	public String getAlias(String name) {
-		return plugin.getWarpsData().getString(name + ".alias");
+		if (plugin.getWarpsData().isSet(name + ".alias"))
+			return plugin.getWarpsData().getString(name + ".alias");
+		return null;
 	}
 
 	public String getMsg(String name) {
-		return plugin.getWarpsData().getString(name + ".welcome");
+		if (plugin.getWarpsData().isSet(name + ".welcome"))
+			return plugin.getWarpsData().getString(name + ".welcome");
+		return null;
 	}
 
 	public static String getAlias(String name, WTP plugin) {
-		return plugin.getWarpsData().getString(name + ".alias");
+		if (plugin.getWarpsData().isSet(name + ".alias"))
+			return plugin.getWarpsData().getString(name + ".alias");
+		return null;
 	}
 
 	public static String getMsg(String name, WTP plugin) {
-		return plugin.getWarpsData().getString(name + ".welcome");
+		if (plugin.getWarpsData().isSet(name + ".welcome"))
+			return plugin.getWarpsData().getString(name + ".welcome");
+		return null;
+	}
+
+	public String getWarpDes(String name) {
+		StringBuilder msg = new StringBuilder("    ").append(ChatColor.GOLD);
+		String alias = getAlias(name);
+		if (alias != null) {
+			msg.append(alias);
+		}
+		msg.append(ChatColor.GRAY).append("(" + name + ")");
+		String welcome = getMsg(name);
+		if (welcome != null) {
+			msg.append(ChatColor.AQUA).append(" - " + welcome);
+		}
+		return msg.toString();
 	}
 }

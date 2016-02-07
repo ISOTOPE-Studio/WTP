@@ -21,7 +21,6 @@ public class CommandWlist implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (cmd.getName().equalsIgnoreCase("wlist")) {
-			UpdateWlist.updateWlist(plugin);
 			if (pages > 0) {
 				if (args.length == 0) {
 					sendWlistMsg(sender, 0);
@@ -35,7 +34,6 @@ public class CommandWlist implements CommandExecutor {
 					return true;
 				}
 				sendWlistMsg(sender, page - 1);
-				sender.sendMessage(plugin.getWarpsData().getKeys(false).toString());
 				return true;
 			} else {
 				sender.sendMessage(new StringBuilder().append(ChatColor.RED).append("服务器没有公共地标").toString());

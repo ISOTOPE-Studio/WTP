@@ -9,6 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import cc.isotopestudio.WTP.wtp.commands.*;
 import cc.isotopestudio.WTP.wtp.files.WTPConfig;
@@ -62,7 +63,8 @@ public final class WTP extends JavaPlugin {
 		this.getCommand("wtpadmin").setExecutor(new CommandWtpadmin(this));
 
 		UpdateWlist.updateWlist(this);
-		
+		BukkitTask task = new UpdateWlist(this).runTaskTimer(this, 3000, 3000);
+
 		getLogger().info("公共地标 成功加载!");
 		getLogger().info("公共地标 由ISOTOPE Studio制作!");
 		getLogger().info("http://isotopestudio.cc");
@@ -70,7 +72,9 @@ public final class WTP extends JavaPlugin {
 
 	public void onReload() {
 		reloadPlayersData();
+		reloadWarpsData();
 		this.reloadConfig();
+		UpdateWlist.updateWlist(this);
 		WTPConfig.update(this);
 	}
 

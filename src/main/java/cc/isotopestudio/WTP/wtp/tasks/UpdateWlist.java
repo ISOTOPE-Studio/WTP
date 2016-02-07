@@ -52,9 +52,6 @@ public class UpdateWlist extends BukkitRunnable {
 
 						int index = page * 7 + (line - 1);
 
-						plugin.getLogger().info("Amount: " + amount + ", pages: " + pages + ", lines: " + lines
-								+ ", page: " + page + ", line: " + line + ", index: " + index);
-
 						StringBuilder msg = new StringBuilder(" [" + (index + 1) + "]  ").append(ChatColor.GOLD);
 						String name = warpList.get(index);
 						String alias = WTPData.getAlias(name, plugin);
