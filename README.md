@@ -5,7 +5,7 @@ http://www.mcbbs.net/thread-552042-1-1.html
 
 ## Download/下载:
 
-暂未发布
+https://github.com/ISOTOPE-Studio/WTP/releases
 
 ## 命令:
 
@@ -27,9 +27,11 @@ http://www.mcbbs.net/thread-552042-1-1.html
 
 /wtp relocate <地标名>  - 花费一定金钱重新设置一个公共地标的地点
 
-/wtp delete <地标名>  - 移除一个公共地标
+/wtp about  - 查看插件信息
 
-之后添加：
+#### 还未添加：
+
+/wtp delete <地标名>  - 移除一个公共地标
 
 /wtp owner <地标名> <玩家>  - 设置一个公共地标的新主人
 
@@ -39,19 +41,25 @@ http://www.mcbbs.net/thread-552042-1-1.html
 
 ### [ 管理 ]
 
-/wtpadmin info <地标名>   - 查看一个公共地标的信息
+/wtpadmin player <玩家>   - 查看一个玩家的地标信息
 
-/wtpadmin limit <玩家ID> <数量>  - 查看/设置玩家所创建的地标的数量
+/wtpadmin warp <地标名>   - 查看一个公共地标的信息
+
+/wtpadmin delete <地标名>   - 删除一个公共地标
+
+/wtpadmin about  - 查看插件信息
 
 ## 权限:
 
-wtp.control - 允许使用/wtp，默认所有玩家拥有
+wtp.control - 允许使用/wtp
 
-wtp.teleport - 允许使用/w，默认所有玩家拥有
+wtp.teleport - 允许使用/w
 
-wtp.list - 允许使用/wlist，默认所有玩家拥有
+wtp.admin - 允许使用管理命令
 
-wtp.teleport - 允许使用管理命令
+#### 还未添加：
+
+wtp.list - 允许使用/wlist
 
 ##配置文件:
 
@@ -76,6 +84,32 @@ _删除地标的价格（负为退钱）_
 _添加地标欢迎信息的价格_
 
 `	welcome: 50`
+
+`Limitation:`
+
+_每个玩家可创建的地标的个数_
+
+_默认: 无需权限_
+
+_VIP权限: WTP.create.VIP1, WTP.create.VIP2, 以此类推_
+
+_目前只提供五个VIP权限_
+
+_-1为无限制_
+
+`  create: `
+
+`    default: 2`
+
+`    VIP1: 5`
+
+`    VIP2: 8`
+
+`    VIP3: 10`
+
+`    VIP4: 20`
+
+`    admin: -1`
 
 ## 插件定制:
 
