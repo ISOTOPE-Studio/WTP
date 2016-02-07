@@ -24,10 +24,23 @@
 
 <p>公共地标插件</p>
 
+<p><a href="http://www.mcbbs.net/thread-552042-1-1.html">http://www.mcbbs.net/thread-552042-1-1.html</a></p>
+
 <h2>
 <a id="download下载" class="anchor" href="#download%E4%B8%8B%E8%BD%BD" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Download/下载:</h2>
 
-<p>暂未发布</p>
+<p><a href="https://github.com/ISOTOPE-Studio/WTP/releases">https://github.com/ISOTOPE-Studio/WTP/releases</a></p>
+
+<h2>
+<a id="截图" class="anchor" href="#%E6%88%AA%E5%9B%BE" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>截图:</h2>
+
+<p><img src="http://www.isotopestudio.cc.img.800cdn.com/pics/wtphelp.png" alt="wtp"></p>
+
+<p><img src="http://www.isotopestudio.cc.img.800cdn.com/pics/wlist.png" alt="wlist"></p>
+
+<p><img src="http://www.isotopestudio.cc.img.800cdn.com/pics/wtpdelete.png" alt="delete"></p>
+
+<p><img src="http://www.isotopestudio.cc.img.800cdn.com/pics/wtpadmin.png" alt="wtpadmin"></p>
 
 <h2>
 <a id="命令" class="anchor" href="#%E5%91%BD%E4%BB%A4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>命令:</h2>
@@ -44,13 +57,20 @@
 <h3>
 <a id="-创建以及设置-" class="anchor" href="#-%E5%88%9B%E5%BB%BA%E4%BB%A5%E5%8F%8A%E8%AE%BE%E7%BD%AE-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>[ 创建以及设置 ]</h3>
 
-<p>/wtp set &lt;地标名&gt;  - 花费一定金钱设置一个公共地标</p>
+<p>/wtp create &lt;地标名&gt;  - 花费一定金钱设置一个公共地标</p>
 
-<p>/wtp name &lt;地标名&gt; &lt;新地标名&gt;  - 花费一定金钱重新设置一个公共地标的名字</p>
+<p>/wtp alias &lt;地标名&gt; &lt;新地标名&gt;  - 花费一定金钱重新设置一个公共地标的名字</p>
 
 <p>/wtp msg &lt;地标名&gt; &lt;欢迎消息&gt; - 设置公共地标的欢迎消息</p>
 
-<p>/wtp loc &lt;地标名&gt;  - 花费一定金钱重新设置一个公共地标的地点</p>
+<p>/wtp relocate &lt;地标名&gt;  - 花费一定金钱重新设置一个公共地标的地点</p>
+
+<p>/wtp about  - 查看插件信息</p>
+
+<h4>
+<a id="还未添加" class="anchor" href="#%E8%BF%98%E6%9C%AA%E6%B7%BB%E5%8A%A0" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>还未添加：</h4>
+
+<p>/wtp delete &lt;地标名&gt;  - 移除一个公共地标</p>
 
 <p>/wtp owner &lt;地标名&gt; &lt;玩家&gt;  - 设置一个公共地标的新主人</p>
 
@@ -58,25 +78,30 @@
 
 <p>/wtp denydel &lt;地标名&gt; &lt;玩家&gt;  - 移除一个玩家到公共地标黑名单</p>
 
-<p>/wtp del &lt;地标名&gt;  - 移除一个公共地标</p>
-
 <h3>
-<a id="管理" class="anchor" href="#%E7%AE%A1%E7%90%86" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>[管理]</h3>
+<a id="-管理-" class="anchor" href="#-%E7%AE%A1%E7%90%86-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>[ 管理 ]</h3>
 
-<p>/wtpadmin info &lt;地标名&gt;   - 查看一个公共地标的信息</p>
+<p>/wtpadmin player &lt;玩家&gt;   - 查看一个玩家的地标信息</p>
 
-<p>/wtpadmin limit &lt;玩家ID&gt; &lt;数量&gt;  - 查看/设置玩家所创建的地标的数量</p>
+<p>/wtpadmin warp &lt;地标名&gt;   - 查看一个公共地标的信息</p>
+
+<p>/wtpadmin delete &lt;地标名&gt;   - 删除一个公共地标</p>
+
+<p>/wtpadmin about  - 查看插件信息</p>
 
 <h2>
 <a id="权限" class="anchor" href="#%E6%9D%83%E9%99%90" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>权限:</h2>
 
-<p>wtp.control - 允许使用/wtp，默认所有玩家拥有</p>
+<p>wtp.control - 允许使用/wtp</p>
 
-<p>wtp.teleport - 允许使用/w，默认所有玩家拥有</p>
+<p>wtp.teleport - 允许使用/w</p>
 
-<p>wtp.list - 允许使用/wlist，默认所有玩家拥有</p>
+<p>wtp.admin - 允许使用管理命令</p>
 
-<p>wtp.teleport - 允许使用管理命令</p>
+<h4>
+<a id="还未添加-1" class="anchor" href="#%E8%BF%98%E6%9C%AA%E6%B7%BB%E5%8A%A0-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>还未添加：</h4>
+
+<p>wtp.list - 允许使用/wlist</p>
 
 <h2>
 <a id="配置文件" class="anchor" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>配置文件:</h2>
@@ -89,7 +114,7 @@
 
 <p><em>重命名的价格</em></p>
 
-<p><code>rename: 200</code></p>
+<p><code>alias: 200</code></p>
 
 <p><em>改变地标位置的价格</em></p>
 
@@ -101,7 +126,33 @@
 
 <p><em>添加地标欢迎信息的价格</em></p>
 
-<p><code>addDescription: 50</code></p>
+<p><code>welcome: 50</code></p>
+
+<p><code>Limitation:</code></p>
+
+<p><em>每个玩家可创建的地标的个数</em></p>
+
+<p><em>默认: 无需权限</em></p>
+
+<p><em>VIP权限: WTP.create.VIP1, WTP.create.VIP2, 以此类推</em></p>
+
+<p><em>目前只提供五个VIP权限</em></p>
+
+<p><em>-1为无限制</em></p>
+
+<p><code>create:</code></p>
+
+<p><code>default: 2</code></p>
+
+<p><code>VIP1: 5</code></p>
+
+<p><code>VIP2: 8</code></p>
+
+<p><code>VIP3: 10</code></p>
+
+<p><code>VIP4: 20</code></p>
+
+<p><code>admin: -1</code></p>
 
 <h2>
 <a id="插件定制" class="anchor" href="#%E6%8F%92%E4%BB%B6%E5%AE%9A%E5%88%B6" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>插件定制:</h2>
