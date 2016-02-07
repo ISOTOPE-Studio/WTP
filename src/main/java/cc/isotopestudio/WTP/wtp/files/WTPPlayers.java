@@ -12,9 +12,11 @@ import cc.isotopestudio.WTP.wtp.WTP;
 
 public class WTPPlayers {
 	private final WTP plugin;
+	private final WTPData wtpData;
 
 	public WTPPlayers(WTP plugin) {
 		this.plugin = plugin;
+		wtpData = new WTPData(plugin);
 	}
 
 	public void tpWarp(Player player, String name) {
@@ -25,16 +27,16 @@ public class WTPPlayers {
 					(float) plugin.getWarpsData().getDouble(name + ".yaw"),
 					(float) plugin.getWarpsData().getDouble(name + ".pitch"));
 			player.teleport(loc);
-			StringBuilder msg = new StringBuilder(plugin.prefix);
-			String alias = plugin.getWarpsData().getString(name + ".alias");
-			String welcome = plugin.getWarpsData().getString(name + ".welcome");
+			StringBuilder msg = new StringBuilder(WTP.prefix);
+			String alias = wtpData.getAlias(name);
+			String welcome = wtpData.getMsg(name);
 			if (alias != null)
 				msg.append(ChatColor.GOLD).append(alias + ": ");
 			if (msg != null)
 				msg.append(ChatColor.AQUA).append(welcome);
 			player.sendMessage(msg.toString());
 		} else {
-			player.sendMessage(new StringBuilder(plugin.prefix).append(ChatColor.RED).append("地标不存在").toString());
+			player.sendMessage(new StringBuilder(WTP.prefix).append(ChatColor.RED).append("地标不存在").toString());
 
 		}
 	}

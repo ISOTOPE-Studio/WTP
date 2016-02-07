@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import cc.isotopestudio.WTP.wtp.WTP;
+import cc.isotopestudio.WTP.wtp.tasks.UpdateWlist;
 
 public class WTPData {
 
@@ -33,6 +34,7 @@ public class WTPData {
 		plugin.getPlayersData().set(player.getName() + ".warps", warpList);
 		plugin.savePlayersData();
 		plugin.saveWarpsData();
+		UpdateWlist.updateWlist(plugin);
 	}
 
 	public boolean ifWarpExist(String name) {
@@ -49,8 +51,8 @@ public class WTPData {
 		plugin.saveWarpsData();
 	}
 
-	public void addMsg(String name, String alias) {
-		plugin.getWarpsData().set(name + ".welcome", alias);
+	public void addMsg(String name, String msg) {
+		plugin.getWarpsData().set(name + ".welcome", msg);
 		plugin.saveWarpsData();
 	}
 
@@ -63,5 +65,21 @@ public class WTPData {
 		plugin.getWarpsData().set(name + ".pitch", loc.getPitch());
 		plugin.getWarpsData().set(name + ".yaw", loc.getYaw());
 		plugin.saveWarpsData();
+	}
+
+	public String getAlias(String name) {
+		return plugin.getWarpsData().getString(name + ".alias");
+	}
+
+	public String getMsg(String name) {
+		return plugin.getWarpsData().getString(name + ".welcome");
+	}
+
+	public static String getAlias(String name, WTP plugin) {
+		return plugin.getWarpsData().getString(name + ".alias");
+	}
+
+	public static String getMsg(String name, WTP plugin) {
+		return plugin.getWarpsData().getString(name + ".welcome");
 	}
 }

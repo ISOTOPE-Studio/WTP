@@ -12,21 +12,23 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import cc.isotopestudio.WTP.wtp.commands.*;
 import cc.isotopestudio.WTP.wtp.files.WTPConfig;
+import cc.isotopestudio.WTP.wtp.tasks.UpdateWlist;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public final class WTP extends JavaPlugin {
-	public final String version = "v1.0";
-
-	public final String prefix = (new StringBuilder()).append(ChatColor.GREEN).append("[").append(ChatColor.ITALIC)
+	public static final String version = "v1.0";
+	public static String FileVersion = "1";
+	public static final String prefix = (new StringBuilder()).append(ChatColor.GREEN).append("[").append(ChatColor.ITALIC)
 			.append(ChatColor.BOLD).append("公共地标").append(ChatColor.RESET).append(ChatColor.GREEN).append("]")
 			.append(ChatColor.RESET).toString();
 	
 	private static final Logger log = Logger.getLogger("Minecraft");
 	public static Economy econ = null;
 
-	String FileVersion = "1";
-
+	
+	public CommandWlist commandWlist;
+	
 	@Override
 	public void onEnable() {
 		getLogger().info("加载Vault API");
@@ -54,10 +56,13 @@ public final class WTP extends JavaPlugin {
 		// PluginManager pm = this.getServer().getPluginManager();
 		WTPConfig.update(this);
 		this.getCommand("w").setExecutor(new CommandW(this));
-		this.getCommand("wlist").setExecutor(new CommandWlist(this));
+		commandWlist = new CommandWlist(this);
+		this.getCommand("wlist").setExecutor(commandWlist);
 		this.getCommand("wtp").setExecutor(new CommandWtp(this));
 		this.getCommand("wtpadmin").setExecutor(new CommandWtpadmin(this));
 
+		UpdateWlist.updateWlist(this);
+		
 		getLogger().info("公共地标 成功加载!");
 		getLogger().info("公共地标 由ISOTOPE Studio制作!");
 		getLogger().info("http://isotopestudio.cc");

@@ -65,14 +65,15 @@ public class CommandWtp implements CommandExecutor {
 						return true;
 					}
 				}
-				
+
 				if (args[0].equals("alias")) {
-					if (args.length == 3) {
+					if (args.length >= 3) {
 						if (!wtpPlayers.isOwner(player, args[1])) {
 							sender.sendMessage(new StringBuilder().append(ChatColor.RED).append("这不是你的地标").toString());
 							return true;
 						}
-						if (args[2].length() >= 15) {
+						String alias = CommandsUti.getArgsString(args, 2);
+						if (alias.length() >= 15) {
 							sender.sendMessage(
 									new StringBuilder().append(ChatColor.RED).append("别名不能超过15个字").toString());
 							return true;
@@ -82,7 +83,7 @@ public class CommandWtp implements CommandExecutor {
 							return true;
 						}
 						WTP.econ.withdrawPlayer(player.getName(), WTPConfig.aliasFee);
-						wtpData.addAlias(args[1], args[2]);
+						wtpData.addAlias(args[1], alias);
 						sender.sendMessage(new StringBuilder().append(ChatColor.AQUA).append("成功添加别名！").toString());
 						return true;
 					} else {
@@ -92,14 +93,15 @@ public class CommandWtp implements CommandExecutor {
 						return true;
 					}
 				}
-				
+
 				if (args[0].equals("msg")) {
-					if (args.length == 3) {
+					if (args.length >= 3) {
 						if (!wtpPlayers.isOwner(player, args[1])) {
 							sender.sendMessage(new StringBuilder().append(ChatColor.RED).append("这不是你的地标").toString());
 							return true;
 						}
-						if (args[2].length() >= 30) {
+						String msg = CommandsUti.getArgsString(args, 2);
+						if (msg.length() >= 30) {
 							sender.sendMessage(
 									new StringBuilder().append(ChatColor.RED).append("欢迎信息不能超过30个字").toString());
 							return true;
@@ -109,8 +111,8 @@ public class CommandWtp implements CommandExecutor {
 							return true;
 						}
 						WTP.econ.withdrawPlayer(player.getName(), WTPConfig.welcomeFee);
-						wtpData.addMsg(args[1], args[2]);
-						sender.sendMessage(new StringBuilder().append(ChatColor.AQUA).append("成功添加别名！").toString());
+						wtpData.addMsg(args[1], msg);
+						sender.sendMessage(new StringBuilder().append(ChatColor.AQUA).append("成功添加欢迎信息！").toString());
 						return true;
 					} else {
 						sender.sendMessage(new StringBuilder().append(ChatColor.RED).append("/wtp msg <地标名字> <欢迎信息>")
@@ -119,7 +121,7 @@ public class CommandWtp implements CommandExecutor {
 						return true;
 					}
 				}
-				
+
 				if (args[0].equals("relocate")) {
 					if (args.length == 2) {
 						if (!wtpPlayers.isOwner(player, args[1])) {
@@ -135,32 +137,36 @@ public class CommandWtp implements CommandExecutor {
 						sender.sendMessage(new StringBuilder().append(ChatColor.AQUA).append("成功改变传送点！").toString());
 						return true;
 					} else {
-						sender.sendMessage(new StringBuilder().append(ChatColor.RED).append("/wtp msg <地标名字> <欢迎信息>")
+						sender.sendMessage(new StringBuilder().append(ChatColor.RED).append("/wtp relocate <地标名字>")
 								.append(ChatColor.GRAY).append(" - ").append(ChatColor.LIGHT_PURPLE)
-								.append("花费" + WTPConfig.welcomeFee + "给公共地标添加欢迎信息").toString());
+								.append("花费" + WTPConfig.relocationFee + "更改公共地标为当前位置").toString());
 						return true;
 					}
 				}
-				
+
 				if (args[0].equals("about")) {
-					about(sender);
+					CommandsUti.about(sender);
 					return true;
 				}
 			}
 		} else { // Help Menu
-			sender.sendMessage((new StringBuilder(plugin.prefix)).append(ChatColor.AQUA).append("== 帮助 ==").toString());
+			sender.sendMessage((new StringBuilder(WTP.prefix)).append(ChatColor.AQUA).append("== 帮助 ==").toString());
 			sender.sendMessage((new StringBuilder()).append(ChatColor.YELLOW).append("这是一个可以创建公共地标的插件，其他玩家可以输入你的")
 					.append(ChatColor.RED).append(ChatColor.ITALIC).append("地标名字").append(ChatColor.RESET)
 					.append(ChatColor.YELLOW).append("传送过来").toString());
-			sender.sendMessage((new StringBuilder()).append(ChatColor.YELLOW).append("传送时玩家将会看到你设置的地标")
+			sender.sendMessage((new StringBuilder()).append(ChatColor.YELLOW).append("查看地标列表或传送时玩家将会看到你设置的地标")
 					.append(ChatColor.RED).append(ChatColor.ITALIC).append("欢迎信息").toString());
 			sender.sendMessage((new StringBuilder()).append(ChatColor.RED).append(ChatColor.ITALIC).append("地标别名")
 					.append(ChatColor.RESET).append(ChatColor.YELLOW).append("是其他玩家看到地标的简短中文介绍").toString());
 			if (sender instanceof Player)
 				sender.sendMessage((new StringBuilder()).append(ChatColor.GREEN)
 						.append("你还可以创建" + wtpPlayers.getPlayerSpareString((Player) sender) + "个地标").toString());
-			sender.sendMessage(
-					(new StringBuilder(plugin.prefix)).append(ChatColor.AQUA).append("== 命令菜单 ==").toString());
+			sender.sendMessage((new StringBuilder(WTP.prefix)).append(ChatColor.AQUA).append("== 命令菜单 ==").toString());
+			sender.sendMessage(new StringBuilder().append(ChatColor.GOLD).append("/w <地标名字>").append(ChatColor.GRAY)
+					.append(" - ").append(ChatColor.LIGHT_PURPLE).append("传送到公共地标").toString());
+			sender.sendMessage(new StringBuilder().append(ChatColor.GOLD).append("/wlist [页数]").append(ChatColor.GRAY)
+					.append(" - ").append(ChatColor.LIGHT_PURPLE).append("查看公共地标列表").toString());
+
 			sender.sendMessage((new StringBuilder()).append(ChatColor.GOLD).append("/wtp create <地标名字>")
 					.append(ChatColor.GRAY).append(" - ").append(ChatColor.LIGHT_PURPLE)
 					.append("花费" + WTPConfig.createFee + "创建一个公共地标").toString());
@@ -178,23 +184,10 @@ public class CommandWtp implements CommandExecutor {
 
 			if (!(sender instanceof Player)) {
 				sender.sendMessage(
-						(new StringBuilder(plugin.prefix)).append(ChatColor.RED).append("只有玩家能执行这些命令！").toString());
+						(new StringBuilder(WTP.prefix)).append(ChatColor.RED).append("只有玩家能执行这些命令！").toString());
 			}
 			return true;
 		}
 		return false;
-	}
-
-	public void about(CommandSender sender) {
-		sender.sendMessage((new StringBuilder()).append(ChatColor.GRAY).append("---- " + plugin.prefix)
-				.append(ChatColor.RESET).append(ChatColor.DARK_GRAY).append(" " + plugin.version).append(ChatColor.GRAY)
-				.append(" ----").toString());
-		sender.sendMessage((new StringBuilder()).append(ChatColor.BLUE).append(ChatColor.ITALIC).append("为服务器制作的公共地标插件")
-				.toString());
-		sender.sendMessage((new StringBuilder()).append(ChatColor.GOLD).append(ChatColor.BOLD).append("制作： ")
-				.append(ChatColor.RESET).append(ChatColor.AQUA).append("Mars (ISOTOPE Studio)").toString());
-		sender.sendMessage((new StringBuilder()).append(ChatColor.GOLD).append(ChatColor.BOLD).append("网址： ")
-				.append(ChatColor.RESET).append(ChatColor.AQUA).append("http://isotopestudio.cc/minecraft.html")
-				.toString());
 	}
 }
