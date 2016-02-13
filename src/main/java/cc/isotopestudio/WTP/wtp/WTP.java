@@ -18,7 +18,7 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public final class WTP extends JavaPlugin {
-	public static final String version = "v1.0";
+	public static final String version = "v1.1";
 	public static String FileVersion = "1";
 	public static final String prefix = (new StringBuilder()).append(ChatColor.GREEN).append("[").append(ChatColor.ITALIC)
 			.append(ChatColor.BOLD).append("公共地标").append(ChatColor.RESET).append(ChatColor.GREEN).append("]")

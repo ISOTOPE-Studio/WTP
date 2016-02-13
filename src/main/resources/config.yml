@@ -15,15 +15,15 @@ Price:
 
 Limitation:
 
-  #每个玩家可创建的地标的个数
-  #默认: 无需权限
-  #VIP权限: WTP.create.VIP1, WTP.create.VIP2, 以此类推
-  #目前只提供五个VIP权限
+  #每种玩家可创建的地标的个数
+  #Default默认: 无需权限
+  #Admin管理员：OP或拥有wtp.admin权限
   #-1为无限制
   create: 
     default: 2
+    admin: -1
+  #其他组，可以自定义: WTP.create.VIP1, WTP.create.builder, 以此类推
     VIP1: 5
     VIP2: 8
     VIP3: 10
-    VIP4: 20
-    admin: -1
+    builder: 20

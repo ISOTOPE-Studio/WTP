@@ -33,6 +33,10 @@ public class CommandWtpadmin implements CommandExecutor {
 				return true;
 			}
 			if (args.length > 0 && !args[0].equals("help")) {
+				if (args[0].equals("check") && args.length == 2) {
+					sender.sendMessage(args[1] + ": " + WTPConfig.getLimit(args[1]));
+				}
+
 				if (args[0].equalsIgnoreCase("player")) {
 					if (args.length == 2) {
 						Player player = Bukkit.getServer().getPlayer(args[1]);
@@ -44,9 +48,9 @@ public class CommandWtpadmin implements CommandExecutor {
 						sender.sendMessage((new StringBuilder(plugin.prefix)).append(ChatColor.AQUA).append("玩家")
 								.append(args[1]).append("的公共地标").toString());
 						if (player != null)
-							sender.sendMessage((new StringBuilder("    ")).append(ChatColor.YELLOW).append(ChatColor.ITALIC)
-									.append("还可以拥有" + wtpPlayers.getPlayerSpareString(player) + "个，已拥有"
-											+ wtpPlayers.getPlayerWarpNum(player) + "个公共地标")
+							sender.sendMessage((new StringBuilder("    ")).append(ChatColor.YELLOW)
+									.append(ChatColor.ITALIC).append("还可以拥有" + wtpPlayers.getPlayerSpareString(player)
+											+ "个，已拥有" + wtpPlayers.getPlayerWarpNum(player) + "个公共地标")
 									.toString());
 
 						List<String> warpsList = wtpPlayers.getPlayerWarpsList(playerName);
@@ -102,7 +106,10 @@ public class CommandWtpadmin implements CommandExecutor {
 					CommandsUti.about(sender);
 					return true;
 				}
-				else{
+				if (args[0].equalsIgnoreCase("reload")) {
+					plugin.onReload();
+					return true;
+				} else {
 					sender.sendMessage(
 							new StringBuilder().append(ChatColor.RED).append("未知命令，输入/wtpadmin查看帮助").toString());
 					return true;
@@ -119,6 +126,8 @@ public class CommandWtpadmin implements CommandExecutor {
 				sender.sendMessage(new StringBuilder().append(ChatColor.GOLD).append("/wtpadmin delete <地标名字>")
 						.append(ChatColor.GRAY).append(" - ").append(ChatColor.LIGHT_PURPLE).append("删除一个公共地标")
 						.toString());
+				sender.sendMessage(new StringBuilder().append(ChatColor.GOLD).append("/wtpadmin reload")
+						.append(ChatColor.GRAY).append(" - ").append(ChatColor.LIGHT_PURPLE).append("重载插件").toString());
 				sender.sendMessage(
 						new StringBuilder().append(ChatColor.GOLD).append("/wtpadmin about").append(ChatColor.GRAY)
 								.append(" - ").append(ChatColor.LIGHT_PURPLE).append("查看插件信息").toString());

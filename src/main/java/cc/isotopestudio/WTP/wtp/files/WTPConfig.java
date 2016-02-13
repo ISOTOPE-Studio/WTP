@@ -1,5 +1,9 @@
 package cc.isotopestudio.WTP.wtp.files;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+
 import cc.isotopestudio.WTP.wtp.WTP;
 
 public class WTPConfig {
@@ -9,13 +13,7 @@ public class WTPConfig {
 	public static double welcomeFee;
 	public static double relocationFee;
 	public static double deleteFee;
-	public static int defaultLimit;
-	public static int VIP1Limit;
-	public static int VIP2Limit;
-	public static int VIP3Limit;
-	public static int VIP4Limit;
-	public static int VIP5Limit;
-	public static int adminLimit;
+	public static HashMap<String, Integer> limitation;
 
 	public static void update(WTP plugin) {
 		createFee = plugin.getConfig().getDouble("Price.create");
@@ -24,38 +22,28 @@ public class WTPConfig {
 		relocationFee = plugin.getConfig().getDouble("Price.relocation");
 		deleteFee = plugin.getConfig().getDouble("Price.delete");
 
-		defaultLimit = plugin.getConfig().getInt("Limitation.default");
-		VIP1Limit = plugin.getConfig().getInt("Limitation.create.VIP1");
-		VIP2Limit = plugin.getConfig().getInt("Limitation.create.VIP2");
-		VIP3Limit = plugin.getConfig().getInt("Limitation.create.VIP3");
-		VIP4Limit = plugin.getConfig().getInt("Limitation.create.VIP4");
-		VIP5Limit = plugin.getConfig().getInt("Limitation.create.VIP5");
-		adminLimit = plugin.getConfig().getInt("Limitation.create.admin");
+		limitation = new HashMap<String, Integer>();
+		limitation.put("default", 0);
+		limitation.put("admin", -1);
+		Set<String> limitSet = plugin.getConfig().getKeys(true);
+		Iterator<String> it = limitSet.iterator();
+		while (it.hasNext()) {
+			String temp = it.next();
+			String tempSplit[] = temp.split("[.]");
+			if (tempSplit.length > 2 && tempSplit[0].equals("Limitation") && tempSplit[1].equals("create")) {
+				plugin.getLogger().info(temp);
+				int tempLimit = plugin.getConfig().getInt(temp);
+				limitation.put(tempSplit[2], tempLimit);
+			}
+		}
 	}
 
-	public static int getLimit(int type) {
-		switch (type) {
-		case (1): {
-			return VIP1Limit;
-		}
-		case (2): {
-			return VIP2Limit;
-		}
-		case (3): {
-			return VIP3Limit;
-		}
-		case (4): {
-			return VIP4Limit;
-		}
-		case (5): {
-			return VIP5Limit;
-		}
-		case (6): {
-			return adminLimit;
-		}
-		default: {
-			return defaultLimit;
-		}
+	public static int getLimit(String name) {
+		try {
+			int limit = limitation.get(name);
+			return limit;
+		} catch (Exception e) {
+			return 0;
 		}
 	}
 }

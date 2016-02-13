@@ -30,7 +30,7 @@ public class UpdateWlist extends BukkitRunnable {
 			}
 			Collections.shuffle(warpList);
 
-			plugin.getLogger().info(warpList.toString()); // *
+			// plugin.getLogger().info(warpList.toString());
 
 			String[][] listMsg = null;
 			if (warpList.size() != 0) {
