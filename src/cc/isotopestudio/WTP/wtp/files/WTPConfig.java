@@ -22,13 +22,11 @@ public class WTPConfig {
 		relocationFee = plugin.getConfig().getDouble("Price.relocation");
 		deleteFee = plugin.getConfig().getDouble("Price.delete");
 
-		limitation = new HashMap<String, Integer>();
+		limitation = new HashMap<>();
 		limitation.put("default", 0);
 		limitation.put("admin", -1);
 		Set<String> limitSet = plugin.getConfig().getKeys(true);
-		Iterator<String> it = limitSet.iterator();
-		while (it.hasNext()) {
-			String temp = it.next();
+		for (String temp : limitSet) {
 			String tempSplit[] = temp.split("[.]");
 			if (tempSplit.length > 2 && tempSplit[0].equals("Limitation") && tempSplit[1].equals("create")) {
 				plugin.getLogger().info(temp);
@@ -40,8 +38,7 @@ public class WTPConfig {
 
 	public static int getLimit(String name) {
 		try {
-			int limit = limitation.get(name);
-			return limit;
+			return limitation.get(name);
 		} catch (Exception e) {
 			return 0;
 		}
