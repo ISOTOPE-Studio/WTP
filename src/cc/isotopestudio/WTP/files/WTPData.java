@@ -1,7 +1,11 @@
-package cc.isotopestudio.WTP.wtp.files;
+/*
+ * Copyright (c) 2016. ISOTOPE Studio
+ */
 
-import cc.isotopestudio.WTP.wtp.WTP;
-import cc.isotopestudio.WTP.wtp.tasks.UpdateWlist;
+package cc.isotopestudio.WTP.files;
+
+import cc.isotopestudio.WTP.WTP;
+import cc.isotopestudio.WTP.tasks.UpdateWlist;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

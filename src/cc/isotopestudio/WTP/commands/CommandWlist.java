@@ -1,4 +1,8 @@
-package cc.isotopestudio.WTP.wtp.commands;
+/*
+ * Copyright (c) 2016. ISOTOPE Studio
+ */
+
+package cc.isotopestudio.WTP.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

@@ -1,7 +1,11 @@
-package cc.isotopestudio.WTP.wtp.tasks;
+/*
+ * Copyright (c) 2016. ISOTOPE Studio
+ */
 
-import cc.isotopestudio.WTP.wtp.WTP;
-import cc.isotopestudio.WTP.wtp.files.WTPData;
+package cc.isotopestudio.WTP.tasks;
+
+import cc.isotopestudio.WTP.WTP;
+import cc.isotopestudio.WTP.files.WTPData;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 

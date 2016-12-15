@@ -1,4 +1,8 @@
-package cc.isotopestudio.WTP.wtp.tasks;
+/*
+ * Copyright (c) 2016. ISOTOPE Studio
+ */
+
+package cc.isotopestudio.WTP.tasks;
 
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

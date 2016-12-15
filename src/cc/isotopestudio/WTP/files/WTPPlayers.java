@@ -1,6 +1,10 @@
-package cc.isotopestudio.WTP.wtp.files;
+/*
+ * Copyright (c) 2016. ISOTOPE Studio
+ */
 
-import cc.isotopestudio.WTP.wtp.WTP;
+package cc.isotopestudio.WTP.files;
+
+import cc.isotopestudio.WTP.WTP;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

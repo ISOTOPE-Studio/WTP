@@ -1,11 +1,15 @@
-package cc.isotopestudio.WTP.wtp;
+/*
+ * Copyright (c) 2016. ISOTOPE Studio
+ */
 
-import cc.isotopestudio.WTP.wtp.commands.CommandW;
-import cc.isotopestudio.WTP.wtp.commands.CommandWlist;
-import cc.isotopestudio.WTP.wtp.commands.CommandWtp;
-import cc.isotopestudio.WTP.wtp.commands.CommandWtpadmin;
-import cc.isotopestudio.WTP.wtp.files.WTPConfig;
-import cc.isotopestudio.WTP.wtp.tasks.UpdateWlist;
+package cc.isotopestudio.WTP;
+
+import cc.isotopestudio.WTP.commands.CommandWlist;
+import cc.isotopestudio.WTP.commands.CommandWtp;
+import cc.isotopestudio.WTP.tasks.UpdateWlist;
+import cc.isotopestudio.WTP.commands.CommandW;
+import cc.isotopestudio.WTP.commands.CommandWtpadmin;
+import cc.isotopestudio.WTP.files.WTPConfig;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -27,11 +31,14 @@ public final class WTP extends JavaPlugin {
     private static final Logger log = Logger.getLogger("Minecraft");
     public static Economy econ = null;
 
+    public static WTP plugin;
 
     public CommandWlist commandWlist;
 
     @Override
     public void onEnable() {
+        plugin = this;
+
         getLogger().info("加载Vault API");
         if (!setupEconomy()) {
             log.severe(String.format("[%s] - 公共地标无法载入，原因：Vault未安装", getDescription().getName()));

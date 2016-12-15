@@ -1,5 +1,5 @@
 ﻿name: WTP
-main: cc.isotopestudio.WTP.wtp.WTP
+main: cc.isotopestudio.WTP.WTP
 
 author: Mars
 description: Public Teleportion

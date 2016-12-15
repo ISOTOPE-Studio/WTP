@@ -1,7 +1,11 @@
-package cc.isotopestudio.WTP.wtp.commands;
+/*
+ * Copyright (c) 2016. ISOTOPE Studio
+ */
 
-import cc.isotopestudio.WTP.wtp.WTP;
-import cc.isotopestudio.WTP.wtp.files.WTPPlayers;
+package cc.isotopestudio.WTP.commands;
+
+import cc.isotopestudio.WTP.WTP;
+import cc.isotopestudio.WTP.files.WTPPlayers;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

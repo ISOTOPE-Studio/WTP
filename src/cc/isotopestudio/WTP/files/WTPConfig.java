@@ -1,9 +1,15 @@
-package cc.isotopestudio.WTP.wtp.files;
+/*
+ * Copyright (c) 2016. ISOTOPE Studio
+ */
 
-import cc.isotopestudio.WTP.wtp.WTP;
+package cc.isotopestudio.WTP.files;
+
+import cc.isotopestudio.WTP.WTP;
 
 import java.util.HashMap;
 import java.util.Set;
+
+import static cc.isotopestudio.WTP.WTP.plugin;
 
 public class WTPConfig {
 
@@ -14,7 +20,7 @@ public class WTPConfig {
     private static double deleteFee;
     public static HashMap<String, Integer> limitation;
 
-    public static void update(WTP plugin) {
+    public static void update() {
         createFee = plugin.getConfig().getDouble("Price.create");
         aliasFee = plugin.getConfig().getDouble("Price.alias");
         welcomeFee = plugin.getConfig().getDouble("Price.welcome");
