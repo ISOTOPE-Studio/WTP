@@ -15,13 +15,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CommandWtp implements CommandExecutor {
-    private final WTPData wtpData;
-    private final WTPPlayers wtpPlayers;
-
-    public CommandWtp(WTP plugin) {
-        wtpData = new WTPData(plugin);
-        wtpPlayers = new WTPPlayers(plugin);
-    }
 
     @SuppressWarnings("deprecation")
     @Override
@@ -35,7 +28,7 @@ public class CommandWtp implements CommandExecutor {
                 }
                 if (args[0].equals("create")) {
                     if (args.length == 2) {
-                        if (wtpPlayers.getPlayerSpare(player) <= 0 && wtpPlayers.getPlayerWarpLim(player) != -1) {
+                        if (WTPPlayers.getPlayerSpare(player) <= 0 && WTPPlayers.getPlayerWarpLim(player) != -1) {
                             sender.sendMessage(
                                     String.valueOf(ChatColor.RED) + "你不能再创建更多的地标了");
                             return true;
@@ -50,7 +43,7 @@ public class CommandWtp implements CommandExecutor {
                                     String.valueOf(ChatColor.RED) + "名字不能超过十个字母");
                             return true;
                         }
-                        if (wtpData.ifWarpExist(args[1])) {
+                        if (WTPData.ifWarpExist(args[1])) {
                             sender.sendMessage(String.valueOf(ChatColor.RED) + "地标" + args[1] + "已经存在，换个名字吧");
                             return true;
                         }
@@ -60,7 +53,7 @@ public class CommandWtp implements CommandExecutor {
                             return true;
                         }
                         WTP.econ.withdrawPlayer(player.getName(), WTPConfig.createFee);
-                        wtpData.addWarp(player, args[1]);
+                        WTPData.addWarp(player, args[1]);
                         sender.sendMessage(String.valueOf(ChatColor.AQUA) + "成功创建！");
                         return true;
                     } else {
@@ -72,7 +65,7 @@ public class CommandWtp implements CommandExecutor {
 
                 if (args[0].equals("alias")) {
                     if (args.length >= 3) {
-                        if (!wtpPlayers.isOwner(player, args[1])) {
+                        if (!WTPPlayers.isOwner(player, args[1])) {
                             sender.sendMessage(String.valueOf(ChatColor.RED) + "这不是你的地标");
                             return true;
                         }
@@ -87,7 +80,7 @@ public class CommandWtp implements CommandExecutor {
                             return true;
                         }
                         WTP.econ.withdrawPlayer(player.getName(), WTPConfig.aliasFee);
-                        wtpData.addAlias(args[1], alias);
+                        WTPData.addAlias(args[1], alias);
                         sender.sendMessage(String.valueOf(ChatColor.AQUA) + "成功添加别名！");
                         return true;
                     } else {
@@ -99,7 +92,7 @@ public class CommandWtp implements CommandExecutor {
 
                 if (args[0].equals("msg")) {
                     if (args.length >= 3) {
-                        if (!wtpPlayers.isOwner(player, args[1])) {
+                        if (!WTPPlayers.isOwner(player, args[1])) {
                             sender.sendMessage(String.valueOf(ChatColor.RED) + "这不是你的地标");
                             return true;
                         }
@@ -114,7 +107,7 @@ public class CommandWtp implements CommandExecutor {
                             return true;
                         }
                         WTP.econ.withdrawPlayer(player.getName(), WTPConfig.welcomeFee);
-                        wtpData.addMsg(args[1], msg);
+                        WTPData.addMsg(args[1], msg);
                         sender.sendMessage(String.valueOf(ChatColor.AQUA) + "成功添加欢迎信息！");
                         return true;
                     } else {
@@ -126,7 +119,7 @@ public class CommandWtp implements CommandExecutor {
 
                 if (args[0].equals("relocate")) {
                     if (args.length == 2) {
-                        if (!wtpPlayers.isOwner(player, args[1])) {
+                        if (!WTPPlayers.isOwner(player, args[1])) {
                             sender.sendMessage(String.valueOf(ChatColor.RED) + "这不是你的地标");
                             return true;
                         }
@@ -135,7 +128,7 @@ public class CommandWtp implements CommandExecutor {
                             return true;
                         }
                         WTP.econ.withdrawPlayer(player.getName(), WTPConfig.relocationFee);
-                        wtpData.relocate(args[1], player);
+                        WTPData.relocate(args[1], player);
                         sender.sendMessage(String.valueOf(ChatColor.AQUA) + "成功改变传送点！");
                         return true;
                     } else {
@@ -163,7 +156,7 @@ public class CommandWtp implements CommandExecutor {
                 sender.sendMessage((new StringBuilder()).append(ChatColor.RED).append(ChatColor.ITALIC).append("地标别名")
                         .append(ChatColor.RESET).append(ChatColor.YELLOW).append("是其他玩家看到地标的简短中文介绍").toString());
                 if (sender instanceof Player)
-                    sender.sendMessage((new StringBuilder()).append(ChatColor.GREEN).append("你还可以创建").append(wtpPlayers.getPlayerSpareString((Player) sender)).append("个地标").toString());
+                    sender.sendMessage((new StringBuilder()).append(ChatColor.GREEN).append("你还可以创建").append(WTPPlayers.getPlayerSpareString((Player) sender)).append("个地标").toString());
                 sender.sendMessage(
                         (new StringBuilder(WTP.prefix)).append(ChatColor.AQUA).append("== 命令菜单 ==").toString());
                 sender.sendMessage(String.valueOf(ChatColor.GOLD) + "/w <地标名字>" + ChatColor.GRAY +

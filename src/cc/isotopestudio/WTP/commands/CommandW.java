@@ -13,11 +13,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CommandW implements CommandExecutor {
-    private final WTPPlayers wtpPlayers;
-
-    public CommandW(WTP plugin) {
-        wtpPlayers = new WTPPlayers(plugin);
-    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -29,7 +24,7 @@ public class CommandW implements CommandExecutor {
                     return true;
                 }
                 if (args != null && args.length == 1) {
-                    wtpPlayers.tpWarp(player, args[0]);
+                    WTPPlayers.tpWarp(player, args[0]);
                     return true;
                 } else {
                     sender.sendMessage(String.valueOf(ChatColor.RED) + "/w <µØ±êÃû×Ö>" +

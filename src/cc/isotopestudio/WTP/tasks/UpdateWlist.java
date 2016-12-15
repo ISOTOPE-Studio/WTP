@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import static cc.isotopestudio.WTP.WTP.warpData;
+
 public class UpdateWlist extends BukkitRunnable {
     private final WTP plugin;
 
@@ -22,7 +24,7 @@ public class UpdateWlist extends BukkitRunnable {
     }
 
     public static void updateWlist(WTP plugin) {
-        Set<String> warpSet = plugin.getWarpsData().getKeys(false);
+        Set<String> warpSet = warpData.getKeys(false);
         if (warpSet.size() != 0) {
             List<String> warpList = new ArrayList<>();
 

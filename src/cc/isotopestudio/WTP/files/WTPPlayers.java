@@ -14,26 +14,22 @@ import org.bukkit.entity.Player;
 import java.util.List;
 import java.util.Set;
 
+import static cc.isotopestudio.WTP.WTP.playerData;
+import static cc.isotopestudio.WTP.WTP.warpData;
+
 public class WTPPlayers {
-    private final WTP plugin;
-    private final WTPData wtpData;
 
-    public WTPPlayers(WTP plugin) {
-        this.plugin = plugin;
-        wtpData = new WTPData(plugin);
-    }
-
-    public void tpWarp(Player player, String name) {
-        if (plugin.getWarpsData().isSet(name)) {
-            World world = Bukkit.getServer().getWorld(plugin.getWarpsData().getString(name + ".world"));
-            Location loc = new Location(world, plugin.getWarpsData().getDouble(name + ".X"),
-                    plugin.getWarpsData().getDouble(name + ".Y"), plugin.getWarpsData().getDouble(name + ".Z"),
-                    (float) plugin.getWarpsData().getDouble(name + ".yaw"),
-                    (float) plugin.getWarpsData().getDouble(name + ".pitch"));
+    public static void tpWarp(Player player, String name) {
+        if (warpData.isSet(name)) {
+            World world = Bukkit.getServer().getWorld(warpData.getString(name + ".world"));
+            Location loc = new Location(world, warpData.getDouble(name + ".X"),
+                    warpData.getDouble(name + ".Y"), warpData.getDouble(name + ".Z"),
+                    (float) warpData.getDouble(name + ".yaw"),
+                    (float) warpData.getDouble(name + ".pitch"));
             player.teleport(loc);
             StringBuilder msg = new StringBuilder(WTP.prefix);
-            String alias = wtpData.getAlias(name);
-            String welcome = wtpData.getMsg(name);
+            String alias = WTPData.getAlias(name);
+            String welcome = WTPData.getMsg(name);
             if (alias != null)
                 msg.append(ChatColor.GOLD).append(alias).append("  ");
             if (welcome != null)
@@ -48,12 +44,12 @@ public class WTPPlayers {
         }
     }
 
-    public int getPlayerWarpNum(Player player) {
-        List<String> warpsList = plugin.getPlayersData().getStringList(player.getName() + ".warps");
+    public static int getPlayerWarpNum(Player player) {
+        List<String> warpsList = playerData.getStringList(player.getName() + ".warps");
         return warpsList.size();
     }
 
-    public int getPlayerWarpLim(Player player) {
+    public static int getPlayerWarpLim(Player player) {
         int limit;
         if (player.isOp() || player.hasPermission("WTP.admin")) {
             return WTPConfig.getLimit("admin");
@@ -69,7 +65,7 @@ public class WTPPlayers {
         return WTPConfig.getLimit("default");
     }
 
-    public int getPlayerSpare(Player player) {
+    public static int getPlayerSpare(Player player) {
         int spare = getPlayerWarpLim(player) - getPlayerWarpNum(player);
         if (getPlayerWarpLim(player) == -1) {
             return -1;
@@ -80,7 +76,7 @@ public class WTPPlayers {
         return getPlayerWarpLim(player) - getPlayerWarpNum(player);
     }
 
-    public String getPlayerSpareString(Player player) {
+    public static String getPlayerSpareString(Player player) {
         if (getPlayerWarpLim(player) != -1) {
             int limit = getPlayerSpare(player);
             return limit + "";
@@ -88,13 +84,13 @@ public class WTPPlayers {
             return "нчоч";
     }
 
-    public boolean isOwner(Player player, String name) {
-        String owner = plugin.getWarpsData().getString(name + ".owner");
+    public static boolean isOwner(Player player, String name) {
+        String owner = warpData.getString(name + ".owner");
         return owner != null && owner.equals(player.getName());
     }
 
-    public List<String> getPlayerWarpsList(String player) {
-        return plugin.getPlayersData().getStringList(player + ".warps");
+    public static List<String> getPlayerWarpsList(String player) {
+        return playerData.getStringList(player + ".warps");
     }
 
 }

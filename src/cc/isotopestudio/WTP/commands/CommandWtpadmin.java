@@ -17,16 +17,9 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class CommandWtpadmin implements CommandExecutor {
-    private final WTP plugin;
-    private final WTPData wtpData;
-    private final WTPPlayers wtpPlayers;
+import static cc.isotopestudio.WTP.WTP.plugin;
 
-    public CommandWtpadmin(WTP plugin) {
-        this.plugin = plugin;
-        wtpData = new WTPData(plugin);
-        wtpPlayers = new WTPPlayers(plugin);
-    }
+public class CommandWtpadmin implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -52,12 +45,12 @@ public class CommandWtpadmin implements CommandExecutor {
                                 .append(args[1]).append("的公共地标").toString());
                         if (player != null)
                             sender.sendMessage((new StringBuilder("    ")).append(ChatColor.YELLOW)
-                                    .append(ChatColor.ITALIC).append("还可以拥有").append(wtpPlayers.getPlayerSpareString(player)).append("个，已拥有").append(wtpPlayers.getPlayerWarpNum(player)).append("个公共地标")
+                                    .append(ChatColor.ITALIC).append("还可以拥有").append(WTPPlayers.getPlayerSpareString(player)).append("个，已拥有").append(WTPPlayers.getPlayerWarpNum(player)).append("个公共地标")
                                     .toString());
 
-                        List<String> warpsList = wtpPlayers.getPlayerWarpsList(playerName);
+                        List<String> warpsList = WTPPlayers.getPlayerWarpsList(playerName);
                         for (String aWarpsList : warpsList) {
-                            sender.sendMessage(wtpData.getWarpDes(aWarpsList));
+                            sender.sendMessage(WTPData.getWarpDes(aWarpsList));
                         }
                         return true;
                     } else {
@@ -69,15 +62,15 @@ public class CommandWtpadmin implements CommandExecutor {
                 }
                 if (args[0].equalsIgnoreCase("warp")) {
                     if (args.length == 2) {
-                        if (!wtpData.ifWarpExist(args[1])) {
+                        if (!WTPData.ifWarpExist(args[1])) {
                             sender.sendMessage(String.valueOf(ChatColor.RED) + "地标不存在");
                             return true;
                         }
                         sender.sendMessage((new StringBuilder(WTP.prefix)).append(ChatColor.AQUA).append("地标: ")
                                 .append(args[1]).toString());
-                        sender.sendMessage(wtpData.getWarpDes(args[1]));
+                        sender.sendMessage(WTPData.getWarpDes(args[1]));
                         sender.sendMessage((new StringBuilder("    ")).append(ChatColor.AQUA).append("拥有着: ")
-                                .append(wtpData.getOwner(args[1])).toString());
+                                .append(WTPData.getOwner(args[1])).toString());
                         return true;
                     } else {
                         sender.sendMessage(String.valueOf(ChatColor.RED) + "/wtpadmin warp <地标名字>" +
@@ -88,11 +81,11 @@ public class CommandWtpadmin implements CommandExecutor {
                 }
                 if (args[0].equalsIgnoreCase("delete")) {
                     if (args.length == 2) {
-                        if (!wtpData.ifWarpExist(args[1])) {
+                        if (!WTPData.ifWarpExist(args[1])) {
                             sender.sendMessage(String.valueOf(ChatColor.RED) + "地标不存在");
                             return true;
                         }
-                        wtpData.deleteWarp(args[1]);
+                        WTPData.deleteWarp(args[1]);
                         sender.sendMessage(
                                 String.valueOf(ChatColor.AQUA) + "成功删除" + args[1]);
                         return true;

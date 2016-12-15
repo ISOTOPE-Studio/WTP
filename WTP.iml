@@ -11,7 +11,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../Spigot/builds/VaultAPI-1.5.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../Spigot/builds/Vault.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

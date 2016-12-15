@@ -10,6 +10,7 @@ import cc.isotopestudio.WTP.tasks.UpdateWlist;
 import cc.isotopestudio.WTP.commands.CommandW;
 import cc.isotopestudio.WTP.commands.CommandWtpadmin;
 import cc.isotopestudio.WTP.files.WTPConfig;
+import cc.isotopestudio.WTP.util.PluginFile;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -33,11 +34,20 @@ public final class WTP extends JavaPlugin {
 
     public static WTP plugin;
 
+    public static PluginFile config;
+    public static PluginFile warpData;
+    public static PluginFile playerData;
+
+
     public CommandWlist commandWlist;
 
     @Override
     public void onEnable() {
         plugin = this;
+
+        config = new PluginFile(this, "config.yml", "config.yml");
+        warpData = new PluginFile(this, "warps.yml");
+        playerData = new PluginFile(this, "players.yml");
 
         getLogger().info("加载Vault API");
         if (!setupEconomy()) {
@@ -48,26 +58,19 @@ public final class WTP extends JavaPlugin {
 
         getLogger().info("加载配置文件中");
 
-        createFile();
         if (!getConfig().getString("FileVersion").equals(FileVersion)) {
             getLogger().info("公共地标 配置文件错误!");
             onDisable();
             return;
         }
 
-        try {
-            getWarpsData().save(warpsFile);
-            getPlayersData().save(playersFile);
-        } catch (IOException ignored) {
-        }
-
         // PluginManager pm = this.getServer().getPluginManager();
-        WTPConfig.update(this);
-        this.getCommand("w").setExecutor(new CommandW(this));
+        WTPConfig.update();
+        this.getCommand("w").setExecutor(new CommandW());
         commandWlist = new CommandWlist();
         this.getCommand("wlist").setExecutor(commandWlist);
-        this.getCommand("wtp").setExecutor(new CommandWtp(this));
-        this.getCommand("wtpadmin").setExecutor(new CommandWtpadmin(this));
+        this.getCommand("wtp").setExecutor(new CommandWtp());
+        this.getCommand("wtpadmin").setExecutor(new CommandWtpadmin());
 
         UpdateWlist.updateWlist(this);
         new UpdateWlist(this).runTaskTimer(this, 3000, 3000);
@@ -78,96 +81,29 @@ public final class WTP extends JavaPlugin {
     }
 
     public void onReload() {
-        reloadPlayersData();
-        reloadWarpsData();
+        playerData.reload();
+        warpData.reload();
         this.reloadConfig();
         UpdateWlist.updateWlist(this);
-        WTPConfig.update(this);
+        WTPConfig.update();
     }
 
     @Override
     public void onDisable() {
-        savePlayersData();
+        playerData.save();
+        warpData.save();
         getLogger().info("公共地标 成功卸载!");
     }
 
     // Vault API
     private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if (economyProvider != null) {
+            econ = economyProvider.getProvider();
         }
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            return false;
-        }
-        econ = rsp.getProvider();
-        return econ != null;
+        return (econ != null);
     }
 
-    // Files
-    private void createFile() {
 
-        File file;
-        file = new File(getDataFolder(), "config" + ".yml");
-        if (!file.exists()) {
-            saveDefaultConfig();
-        }
-    }
-
-    private File playersFile = null;
-    private FileConfiguration playersData = null;
-
-    private void reloadPlayersData() {
-        if (playersFile == null) {
-            playersFile = new File(getDataFolder(), "players.yml");
-        }
-        playersData = YamlConfiguration.loadConfiguration(playersFile);
-    }
-
-    public FileConfiguration getPlayersData() {
-        if (playersData == null) {
-            reloadPlayersData();
-        }
-        return playersData;
-    }
-
-    public void savePlayersData() {
-        if (playersData == null || playersFile == null) {
-            return;
-        }
-        try {
-            getPlayersData().save(playersFile);
-        } catch (IOException ex) {
-            getLogger().info("地标文件保存失败！");
-        }
-    }
-
-    private File warpsFile = null;
-    private FileConfiguration warpsData = null;
-
-    private void reloadWarpsData() {
-        if (warpsFile == null) {
-            warpsFile = new File(getDataFolder(), "warps.yml");
-        }
-        warpsData = YamlConfiguration.loadConfiguration(warpsFile);
-    }
-
-    public FileConfiguration getWarpsData() {
-        if (warpsData == null) {
-            reloadWarpsData();
-        }
-        return warpsData;
-    }
-
-    public void saveWarpsData() {
-        if (warpsData == null || warpsFile == null) {
-            return;
-        }
-        try {
-            getWarpsData().save(warpsFile);
-        } catch (IOException ex) {
-            getLogger().info("地标文件保存失败！");
-        }
-    }
 
 }

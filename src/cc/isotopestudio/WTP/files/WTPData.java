@@ -13,33 +13,31 @@ import org.bukkit.entity.Player;
 import java.util.List;
 import java.util.Set;
 
+import static cc.isotopestudio.WTP.WTP.playerData;
+import static cc.isotopestudio.WTP.WTP.plugin;
+import static cc.isotopestudio.WTP.WTP.warpData;
+
 public class WTPData {
 
-    private final WTP plugin;
-
-    public WTPData(WTP plugin) {
-        this.plugin = plugin;
-    }
-
-    public void addWarp(Player player, String name) {
-        plugin.getWarpsData().set(name + ".owner", player.getName());
+    public static void addWarp(Player player, String name) {
+        warpData.set(name + ".owner", player.getName());
         Location loc = player.getLocation();
-        plugin.getWarpsData().set(name + ".world", loc.getWorld().getName());
-        plugin.getWarpsData().set(name + ".X", loc.getX());
-        plugin.getWarpsData().set(name + ".Y", loc.getY());
-        plugin.getWarpsData().set(name + ".Z", loc.getZ());
-        plugin.getWarpsData().set(name + ".pitch", loc.getPitch());
-        plugin.getWarpsData().set(name + ".yaw", loc.getYaw());
-        List<String> warpList = plugin.getPlayersData().getStringList(player.getName() + ".warps");
+        warpData.set(name + ".world", loc.getWorld().getName());
+        warpData.set(name + ".X", loc.getX());
+        warpData.set(name + ".Y", loc.getY());
+        warpData.set(name + ".Z", loc.getZ());
+        warpData.set(name + ".pitch", loc.getPitch());
+        warpData.set(name + ".yaw", loc.getYaw());
+        List<String> warpList = playerData.getStringList(player.getName() + ".warps");
         warpList.add(name);
-        plugin.getPlayersData().set(player.getName() + ".warps", warpList);
-        plugin.savePlayersData();
-        plugin.saveWarpsData();
+        playerData.set(player.getName() + ".warps", warpList);
+        playerData.save();
+        warpData.save();
         UpdateWlist.updateWlist(plugin);
     }
 
-    public void deleteWarp(String name) {
-        List<String> warpsList = plugin.getPlayersData().getStringList(getOwner(name) + ".warps");
+    public static void deleteWarp(String name) {
+        List<String> warpsList = playerData.getStringList(getOwner(name) + ".warps");
         int index = 0;
         for (String temp : warpsList) {
             if (temp.equals(name)) {
@@ -48,17 +46,17 @@ public class WTPData {
             }
             index++;
         }
-        plugin.getPlayersData().set(getOwner(name) + ".warps", warpsList);
+        playerData.set(getOwner(name) + ".warps", warpsList);
 
-        plugin.getWarpsData().set(name, null);
+        warpData.set(name, null);
 
-        plugin.savePlayersData();
-        plugin.saveWarpsData();
+        playerData.save();
+        warpData.save();
         UpdateWlist.updateWlist(plugin);
     }
 
-    public boolean ifWarpExist(String name) {
-        Set<String> list = plugin.getWarpsData().getKeys(false);
+    public static boolean ifWarpExist(String name) {
+        Set<String> list = warpData.getKeys(false);
         for (String temp : list) {
             if (temp.equals(name))
                 return true;
@@ -66,56 +64,56 @@ public class WTPData {
         return false;
     }
 
-    public void addAlias(String name, String alias) {
-        plugin.getWarpsData().set(name + ".alias", alias);
-        plugin.saveWarpsData();
+    public static void addAlias(String name, String alias) {
+        warpData.set(name + ".alias", alias);
+        warpData.save();
     }
 
-    public void addMsg(String name, String msg) {
-        plugin.getWarpsData().set(name + ".welcome", msg);
-        plugin.saveWarpsData();
+    public static void addMsg(String name, String msg) {
+        warpData.set(name + ".welcome", msg);
+        warpData.save();
     }
 
-    public void relocate(String name, Player player) {
+    public static void relocate(String name, Player player) {
         Location loc = player.getLocation();
-        plugin.getWarpsData().set(name + ".world", loc.getWorld().getName());
-        plugin.getWarpsData().set(name + ".X", loc.getX());
-        plugin.getWarpsData().set(name + ".Y", loc.getY());
-        plugin.getWarpsData().set(name + ".Z", loc.getZ());
-        plugin.getWarpsData().set(name + ".pitch", loc.getPitch());
-        plugin.getWarpsData().set(name + ".yaw", loc.getYaw());
-        plugin.saveWarpsData();
+        warpData.set(name + ".world", loc.getWorld().getName());
+        warpData.set(name + ".X", loc.getX());
+        warpData.set(name + ".Y", loc.getY());
+        warpData.set(name + ".Z", loc.getZ());
+        warpData.set(name + ".pitch", loc.getPitch());
+        warpData.set(name + ".yaw", loc.getYaw());
+        warpData.save();
     }
 
-    public String getOwner(String name) {
-        return plugin.getWarpsData().getString(name + ".owner");
+    public static String getOwner(String name) {
+        return warpData.getString(name + ".owner");
     }
 
-    public String getAlias(String name) {
-        if (plugin.getWarpsData().isSet(name + ".alias"))
-            return plugin.getWarpsData().getString(name + ".alias");
+    public static String getAlias(String name) {
+        if (warpData.isSet(name + ".alias"))
+            return warpData.getString(name + ".alias");
         return null;
     }
 
-    public String getMsg(String name) {
-        if (plugin.getWarpsData().isSet(name + ".welcome"))
-            return plugin.getWarpsData().getString(name + ".welcome");
+    public static String getMsg(String name) {
+        if (warpData.isSet(name + ".welcome"))
+            return warpData.getString(name + ".welcome");
         return null;
     }
 
     public static String getAlias(String name, WTP plugin) {
-        if (plugin.getWarpsData().isSet(name + ".alias"))
-            return plugin.getWarpsData().getString(name + ".alias");
+        if (warpData.isSet(name + ".alias"))
+            return warpData.getString(name + ".alias");
         return null;
     }
 
     public static String getMsg(String name, WTP plugin) {
-        if (plugin.getWarpsData().isSet(name + ".welcome"))
-            return plugin.getWarpsData().getString(name + ".welcome");
+        if (warpData.isSet(name + ".welcome"))
+            return warpData.getString(name + ".welcome");
         return null;
     }
 
-    public String getWarpDes(String name) {
+    public static String getWarpDes(String name) {
         StringBuilder msg = new StringBuilder("    ").append(ChatColor.GOLD);
         String alias = getAlias(name);
         if (alias != null) {
