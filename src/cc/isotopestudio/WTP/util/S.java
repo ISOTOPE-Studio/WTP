@@ -34,6 +34,10 @@ public class S {
         return String.valueOf(ChatColor.GOLD) + s + ChatColor.RESET;
     }
 
+    public static String toLightPurple(String s) {
+        return String.valueOf(ChatColor.LIGHT_PURPLE) + s + ChatColor.RESET;
+    }
+
     public static String toBoldGreen(String s) {
         return String.valueOf(ChatColor.GREEN) + ChatColor.BOLD + s + ChatColor.RESET;
     }

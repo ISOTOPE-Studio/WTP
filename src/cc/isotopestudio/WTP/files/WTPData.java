@@ -13,9 +13,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 import java.util.Set;
 
-import static cc.isotopestudio.WTP.WTP.playerData;
-import static cc.isotopestudio.WTP.WTP.plugin;
-import static cc.isotopestudio.WTP.WTP.warpData;
+import static cc.isotopestudio.WTP.WTP.*;
 
 public class WTPData {
 

@@ -6,6 +6,7 @@ package cc.isotopestudio.WTP.commands;
 
 import cc.isotopestudio.WTP.WTP;
 import cc.isotopestudio.WTP.files.WTPPlayers;
+import cc.isotopestudio.WTP.util.S;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,21 +21,20 @@ public class CommandW implements CommandExecutor {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
                 if (!player.hasPermission("WTP.teleport")) {
-                    sender.sendMessage(String.valueOf(ChatColor.RED) + "你没有权限传送");
+                    sender.sendMessage(S.toPrefixRed("你没有权限传送"));
                     return true;
                 }
                 if (args != null && args.length == 1) {
                     WTPPlayers.tpWarp(player, args[0]);
                     return true;
                 } else {
-                    sender.sendMessage(String.valueOf(ChatColor.RED) + "/w <地标名字>" +
+                    sender.sendMessage(S.toPrefixRed("/w <地标名字>") +
                             ChatColor.GRAY + " - " + ChatColor.LIGHT_PURPLE +
                             "传送到公共地标，输入/wlist查看地标列表");
                     return true;
                 }
             } else {
-                sender.sendMessage(
-                        (new StringBuilder(WTP.prefix)).append(ChatColor.RED).append("只有玩家能执行这个命令！").toString());
+                sender.sendMessage(S.toPrefixRed("只有玩家能执行这个命令！"));
                 return true;
             }
         }

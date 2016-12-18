@@ -5,9 +5,10 @@
 package cc.isotopestudio.WTP.commands;
 
 import cc.isotopestudio.WTP.WTP;
-import cc.isotopestudio.WTP.files.WTPPlayers;
 import cc.isotopestudio.WTP.files.WTPConfig;
 import cc.isotopestudio.WTP.files.WTPData;
+import cc.isotopestudio.WTP.files.WTPPlayers;
+import cc.isotopestudio.WTP.util.S;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -25,7 +26,7 @@ public class CommandWtpadmin implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("wtpadmin")) {
             if (!sender.hasPermission("WTP.admin")) {
-                sender.sendMessage(String.valueOf(ChatColor.RED) + "你没有权限");
+                sender.sendMessage(S.toPrefixRed("你没有权限"));
                 return true;
             }
             if (args.length > 0 && !args[0].equals("help")) {
@@ -63,7 +64,7 @@ public class CommandWtpadmin implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("warp")) {
                     if (args.length == 2) {
                         if (!WTPData.ifWarpExist(args[1])) {
-                            sender.sendMessage(String.valueOf(ChatColor.RED) + "地标不存在");
+                            sender.sendMessage(S.toPrefixRed("地标不存在"));
                             return true;
                         }
                         sender.sendMessage((new StringBuilder(WTP.prefix)).append(ChatColor.AQUA).append("地标: ")
@@ -73,8 +74,8 @@ public class CommandWtpadmin implements CommandExecutor {
                                 .append(WTPData.getOwner(args[1])).toString());
                         return true;
                     } else {
-                        sender.sendMessage(String.valueOf(ChatColor.RED) + "/wtpadmin warp <地标名字>" +
-                                ChatColor.GRAY + " - " + ChatColor.LIGHT_PURPLE + "查看公共地标信息");
+                        sender.sendMessage(S.toPrefixRed("/wtpadmin warp <地标名字>" +
+                                ChatColor.GRAY + " - " + ChatColor.LIGHT_PURPLE + "查看公共地标信息"));
 
                         return true;
                     }
@@ -82,7 +83,7 @@ public class CommandWtpadmin implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("delete")) {
                     if (args.length == 2) {
                         if (!WTPData.ifWarpExist(args[1])) {
-                            sender.sendMessage(String.valueOf(ChatColor.RED) + "地标不存在");
+                            sender.sendMessage(S.toPrefixRed("地标不存在"));
                             return true;
                         }
                         WTPData.deleteWarp(args[1]);
@@ -90,8 +91,8 @@ public class CommandWtpadmin implements CommandExecutor {
                                 String.valueOf(ChatColor.AQUA) + "成功删除" + args[1]);
                         return true;
                     } else {
-                        sender.sendMessage(String.valueOf(ChatColor.RED) + "/wtpadmin delete <地标名字>" +
-                                ChatColor.GRAY + " - " + ChatColor.LIGHT_PURPLE + "删除一个公共地标");
+                        sender.sendMessage(S.toPrefixRed("/wtpadmin delete <地标名字>" +
+                                ChatColor.GRAY + " - " + ChatColor.LIGHT_PURPLE + "删除一个公共地标"));
                         return true;
                     }
                 }
@@ -101,26 +102,28 @@ public class CommandWtpadmin implements CommandExecutor {
                 }
                 if (args[0].equalsIgnoreCase("reload")) {
                     plugin.onReload();
+                    sender.sendMessage(
+                            S.toPrefixGreen("成功重载"));
                     return true;
                 } else {
                     sender.sendMessage(
-                            String.valueOf(ChatColor.RED) + "未知命令，输入/wtpadmin查看帮助");
+                            S.toPrefixRed("未知命令，输入/wtpadmin查看帮助"));
                     return true;
                 }
             } else { // Help Menu
                 sender.sendMessage(
                         (new StringBuilder(WTP.prefix)).append(ChatColor.AQUA).append("== 管理员菜单 ==").toString());
-                sender.sendMessage((new StringBuilder()).append(ChatColor.GOLD).append("/wtpadmin player <玩家名字>")
+                sender.sendMessage((new StringBuilder()).append(ChatColor.GREEN).append("/wtpadmin player <玩家名字>")
                         .append(ChatColor.GRAY).append(" - ").append(ChatColor.LIGHT_PURPLE).append("查看玩家的地标信息")
                         .toString());
-                sender.sendMessage(String.valueOf(ChatColor.GOLD) + "/wtpadmin warp <地标名字>" +
+                sender.sendMessage(String.valueOf(ChatColor.GREEN) + "/wtpadmin warp <地标名字>" +
                         ChatColor.GRAY + " - " + ChatColor.LIGHT_PURPLE + "查看公共地标信息");
-                sender.sendMessage(String.valueOf(ChatColor.GOLD) + "/wtpadmin delete <地标名字>" +
+                sender.sendMessage(String.valueOf(ChatColor.GREEN) + "/wtpadmin delete <地标名字>" +
                         ChatColor.GRAY + " - " + ChatColor.LIGHT_PURPLE + "删除一个公共地标");
-                sender.sendMessage(String.valueOf(ChatColor.GOLD) + "/wtpadmin reload" +
+                sender.sendMessage(String.valueOf(ChatColor.GREEN) + "/wtpadmin reload" +
                         ChatColor.GRAY + " - " + ChatColor.LIGHT_PURPLE + "重载插件");
                 sender.sendMessage(
-                        String.valueOf(ChatColor.GOLD) + "/wtpadmin about" + ChatColor.GRAY +
+                        String.valueOf(ChatColor.GREEN) + "/wtpadmin about" + ChatColor.GRAY +
                                 " - " + ChatColor.LIGHT_PURPLE + "查看插件信息");
 
                 return true;

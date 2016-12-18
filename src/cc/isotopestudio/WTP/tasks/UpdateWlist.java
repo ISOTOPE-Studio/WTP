@@ -6,6 +6,7 @@ package cc.isotopestudio.WTP.tasks;
 
 import cc.isotopestudio.WTP.WTP;
 import cc.isotopestudio.WTP.files.WTPData;
+import cc.isotopestudio.WTP.util.S;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -42,19 +43,18 @@ public class UpdateWlist extends BukkitRunnable {
                 plugin.commandWlist.pages = pages;
                 listMsg = new String[pages][9];
                 for (int page = 0; page < pages; page++) {
-                    listMsg[page][0] = (new StringBuilder(WTP.prefix).append(ChatColor.AQUA).append("=== 地标列表 ==="))
-                            .toString();
+                    listMsg[page][0] = S.toPrefixAqua("=== 地标列表 ===");
                     int lines = (amount - (page * 7)) / 7;
                     lines = lines >= 1 ? 7 : amount % 7;
                     for (int line = 1; line <= lines; line++) {
 
                         int index = page * 7 + (line - 1);
 
-                        StringBuilder msg = new StringBuilder(" [" + (index + 1) + "]  ").append(ChatColor.GOLD);
+                        StringBuilder msg = new StringBuilder(" [" + (index + 1) + "]  ").append(ChatColor.GREEN);
                         String name = warpList.get(index);
                         String alias = WTPData.getAlias(name, plugin);
                         if (alias != null) {
-                            msg.append(alias);
+                            msg.append(alias).append(" ");
                         }
                         msg.append(ChatColor.GRAY).append("(").append(name).append(")");
                         String welcome = WTPData.getMsg(name, plugin);
@@ -63,7 +63,7 @@ public class UpdateWlist extends BukkitRunnable {
                         }
                         listMsg[page][line] = msg.toString();
                     }
-                    listMsg[page][8] = (new StringBuilder(WTP.prefix).append(ChatColor.AQUA).append("第").append(page + 1).append("页，共").append(pages).append("页")).toString();
+                    listMsg[page][8] = S.toPrefixAqua("第" + (page + 1) + "页，共" + pages + "页");
                 }
                 plugin.commandWlist.warpListMsg = listMsg;
             }

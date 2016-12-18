@@ -4,29 +4,25 @@
 
 package cc.isotopestudio.WTP;
 
+import cc.isotopestudio.WTP.commands.CommandW;
 import cc.isotopestudio.WTP.commands.CommandWlist;
 import cc.isotopestudio.WTP.commands.CommandWtp;
-import cc.isotopestudio.WTP.tasks.UpdateWlist;
-import cc.isotopestudio.WTP.commands.CommandW;
 import cc.isotopestudio.WTP.commands.CommandWtpadmin;
 import cc.isotopestudio.WTP.files.WTPConfig;
+import cc.isotopestudio.WTP.tasks.UpdateWlist;
 import cc.isotopestudio.WTP.util.PluginFile;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 public final class WTP extends JavaPlugin {
-    public static final String version = "v1.1";
+    public static final String version = "v1.1.1";
     private static final String FileVersion = "1";
-    public static final String prefix = (new StringBuilder()).append(ChatColor.GREEN).append("[").append(ChatColor.ITALIC)
-            .append(ChatColor.BOLD).append("公共地标").append(ChatColor.RESET).append(ChatColor.GREEN).append("]")
+    public static final String prefix = (new StringBuilder()).append(ChatColor.GOLD).append("[").append(ChatColor.ITALIC)
+            .append(ChatColor.BOLD).append("公共地标").append(ChatColor.RESET).append(ChatColor.GOLD).append("]")
             .append(ChatColor.RESET).toString();
 
     private static final Logger log = Logger.getLogger("Minecraft");
@@ -46,6 +42,7 @@ public final class WTP extends JavaPlugin {
         plugin = this;
 
         config = new PluginFile(this, "config.yml", "config.yml");
+        config.setEditable(false);
         warpData = new PluginFile(this, "warps.yml");
         playerData = new PluginFile(this, "players.yml");
 

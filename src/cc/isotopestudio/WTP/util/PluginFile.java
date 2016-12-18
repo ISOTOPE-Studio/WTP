@@ -42,6 +42,12 @@ public class PluginFile extends YamlConfiguration {
         reload();
     }
 
+    private boolean editable = true;
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+
     /**
      * Reload configuration
      */
@@ -62,26 +68,29 @@ public class PluginFile extends YamlConfiguration {
             load(file);
 
             if (defaults != null) {
-                FileConfiguration defaultsConfig = YamlConfiguration.loadConfiguration(plugin.getResource(defaults));
-
-                setDefaults(defaultsConfig);
-                options().copyDefaults(true);
-
-                save();
+                OutputStream os = new FileOutputStream(file);
+                int bytesRead = 0;
+                byte[] buffer = new byte[8192];
+                InputStream resource = plugin.getResource(defaults);
+                while ((bytesRead = resource.read(buffer, 0, 8192)) != -1) {
+                    os.write(buffer, 0, bytesRead);
+                }
+                os.close();
+                resource.close();
+                load(file);
             }
 
         } catch (IOException | InvalidConfigurationException exception) {
             exception.printStackTrace();
             plugin.getLogger().severe("Error while loading file " + file.getName());
-
         }
 
         DumperOptions yamlOptions = null;
         try {
-            Field f = YamlConfiguration.class.getDeclaredField("yamlOptions");   //��ȡ��YamlConfiguration�������yamlOptions�ֶ�
+            Field f = YamlConfiguration.class.getDeclaredField("yamlOptions");
             f.setAccessible(true);
 
-            yamlOptions = new DumperOptions() {  //��yamlOptions�ֶ��滻Ϊһ��DumperOptions�������ڲ��࣬�����滻��setAllowUnicode����������Զ�޷�����Ϊtrue
+            yamlOptions = new DumperOptions() {
                 @Override
                 public void setAllowUnicode(boolean allowUnicode) {
                     super.setAllowUnicode(false);
@@ -94,7 +103,7 @@ public class PluginFile extends YamlConfiguration {
             };
 
             yamlOptions.setLineBreak(DumperOptions.LineBreak.getPlatformLineBreak());
-            f.set(this, yamlOptions); //���µ�yamlOptions͵��������ȥ
+            f.set(this, yamlOptions);
         } catch (ReflectiveOperationException ex) {
             ex.printStackTrace();
         }
@@ -105,13 +114,14 @@ public class PluginFile extends YamlConfiguration {
      * Save configuration
      */
     public void save() {
-        try {
-            options().indent(2);
-            save(file);
-        } catch (IOException exception) {
-            exception.printStackTrace();
-            plugin.getLogger().severe("Error while saving file " + file.getName());
-        }
+        if (editable)
+            try {
+                options().indent(2);
+                save(file);
+            } catch (IOException exception) {
+                exception.printStackTrace();
+                plugin.getLogger().severe("Error while saving file " + file.getName());
+            }
     }
 
     @Override

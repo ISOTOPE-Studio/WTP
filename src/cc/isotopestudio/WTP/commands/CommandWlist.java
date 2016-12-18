@@ -4,6 +4,7 @@
 
 package cc.isotopestudio.WTP.commands;
 
+import cc.isotopestudio.WTP.util.S;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,15 +24,14 @@ public class CommandWlist implements CommandExecutor {
                 }
                 int page = CommandsUti.getNumber(args[0], -1);
                 if (page > pages || page < 1) {
-                    sender.sendMessage(
-                            String.valueOf(ChatColor.RED) + "一共只有" + pages + "页");
+                    sender.sendMessage(S.toPrefixRed("一共只有" + pages + "页"));
                     sendWlistMsg(sender, 0);
                     return true;
                 }
                 sendWlistMsg(sender, page - 1);
                 return true;
             } else {
-                sender.sendMessage(String.valueOf(ChatColor.RED) + "服务器没有公共地标");
+                sender.sendMessage(S.toPrefixRed("服务器没有公共地标"));
                 return true;
             }
         }

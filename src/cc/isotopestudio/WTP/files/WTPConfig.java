@@ -4,8 +4,6 @@
 
 package cc.isotopestudio.WTP.files;
 
-import cc.isotopestudio.WTP.WTP;
-
 import java.util.HashMap;
 import java.util.Set;
 
