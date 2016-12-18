@@ -9,6 +9,7 @@ import cc.isotopestudio.WTP.commands.CommandWlist;
 import cc.isotopestudio.WTP.commands.CommandWtp;
 import cc.isotopestudio.WTP.commands.CommandWtpadmin;
 import cc.isotopestudio.WTP.files.WTPConfig;
+import cc.isotopestudio.WTP.metrics.Metrics;
 import cc.isotopestudio.WTP.tasks.UpdateWlist;
 import cc.isotopestudio.WTP.util.PluginFile;
 import net.milkbowl.vault.economy.Economy;
@@ -16,6 +17,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 public final class WTP extends JavaPlugin {
@@ -71,6 +73,13 @@ public final class WTP extends JavaPlugin {
 
         UpdateWlist.updateWlist(this);
         new UpdateWlist(this).runTaskTimer(this, 3000, 3000);
+
+        try {
+            Metrics metrics = new Metrics(this);
+            metrics.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         getLogger().info("公共地标 成功加载!");
         getLogger().info("公共地标 由ISOTOPE Studio制作!");
