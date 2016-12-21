@@ -53,7 +53,7 @@ public abstract class GUI implements Listener {
 	void setOption(int position, ItemStack item) {
 		optionNames[position] = item.getItemMeta() == null ? item.getType().toString()
 				: item.getItemMeta().getDisplayName();
-		optionIcons[position] = item;
+		optionIcons[position] = item.clone();
 	}
 
 	public void open(Player player) {

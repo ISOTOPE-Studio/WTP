@@ -6,6 +6,7 @@ package cc.isotopestudio.WTP.tasks;
 
 import cc.isotopestudio.WTP.WTP;
 import cc.isotopestudio.WTP.files.WTPData;
+import cc.isotopestudio.WTP.gui.WarpGUI;
 import cc.isotopestudio.WTP.util.S;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -13,9 +14,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import static cc.isotopestudio.WTP.WTP.warpData;
+import static cc.isotopestudio.WTP.gui.WarpGUI.keys;
 
 public class UpdateWlist extends BukkitRunnable {
     private final WTP plugin;
@@ -25,11 +26,11 @@ public class UpdateWlist extends BukkitRunnable {
     }
 
     public static void updateWlist(WTP plugin) {
-        Set<String> warpSet = warpData.getKeys(false);
-        if (warpSet.size() != 0) {
+        keys = warpData.getKeys(false);
+        if (keys.size() != 0) {
             List<String> warpList = new ArrayList<>();
 
-            warpList.addAll(warpSet);
+            warpList.addAll(keys);
             Collections.shuffle(warpList);
 
             // plugin.getLogger().info(warpList.toString());
@@ -52,12 +53,12 @@ public class UpdateWlist extends BukkitRunnable {
 
                         StringBuilder msg = new StringBuilder(" [" + (index + 1) + "]  ").append(ChatColor.GREEN);
                         String name = warpList.get(index);
-                        String alias = WTPData.getAlias(name, plugin);
+                        String alias = WTPData.getAlias(name);
                         if (alias != null) {
                             msg.append(alias).append(" ");
                         }
                         msg.append(ChatColor.GRAY).append("(").append(name).append(")");
-                        String welcome = WTPData.getMsg(name, plugin);
+                        String welcome = WTPData.getMsg(name);
                         if (welcome != null) {
                             msg.append(ChatColor.AQUA).append(" - ").append(welcome);
                         }

@@ -4,23 +4,25 @@
 
 package cc.isotopestudio.WTP.gui;
 
+import cc.isotopestudio.WTP.files.WTPData;
 import cc.isotopestudio.WTP.util.S;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static cc.isotopestudio.WTP.WTP.plugin;
-import static cc.isotopestudio.WTP.WTP.warpData;
 
 public class WarpGUI extends GUI {
+
+    public static Set<String> keys;
 
     ArrayList<String> warps;
     Map<Integer, String> slotIDMap;
@@ -29,7 +31,7 @@ public class WarpGUI extends GUI {
         super(S.toBoldGold("地标列表") + "[" + player.getName() + "]", 4 * 9, player);
         this.page = page;
 
-        warps = new ArrayList<>(warpData.getKeys(false));
+        warps = new ArrayList<>(keys);
         slotIDMap = new HashMap<>();
 
         if (page > 0) {
@@ -41,12 +43,33 @@ public class WarpGUI extends GUI {
             setOption(35, new ItemStack(Material.ARROW), S.toBoldGold("下一页"), S.toRed("第 " + (page + 1) + " 页"));
         }
         for (int i = 0; i < 4 * 7; i++) {
-            if (i < warps.size()) {
+            if (i + page * 4 * 7 < warps.size()) {
                 int row = i / 7;
                 int col = i % 7;
                 int pos = row * 9 + col + 1;
-                slotIDMap.put(pos, warps.get(page * 4 * 7 + i));
-                setOption(pos, new ItemStack(Material.GRASS), warps.get(page * 4 * 7 + i), "");
+                String warpName = warps.get(page * 4 * 7 + i);
+
+                slotIDMap.put(pos, warpName);
+
+                ItemStack warpItem = new ItemStack(Material.WOOL, 1, (short) (Math.random() * 16));
+                ItemMeta itemMeta = warpItem.getItemMeta();
+                itemMeta.setDisplayName(S.toBoldRed(warpName));
+                List<String> lore = new ArrayList<>();
+                String alias = WTPData.getAlias(warpName);
+                if (alias != null) {
+                    lore.add(S.toBoldDarkGreen(alias));
+                }
+                String msg = WTPData.getMsg(warpName);
+                if (msg != null) {
+                    lore.add(S.toGreen(msg));
+                }
+                lore.add(S.toGold("拥有者: " + WTPData.getOwner(warpName)));
+                lore.add("");
+                lore.add(S.toItalicYellow("Shift + 右键 添加至个人收藏"));
+                itemMeta.setLore(lore);
+                warpItem.setItemMeta(itemMeta);
+
+                setOption(pos, warpItem);
             }
         }
     }
@@ -77,6 +100,12 @@ public class WarpGUI extends GUI {
 
 
     private void onWarp(int slot) {
+        String warpName = slotIDMap.get(slot);
+        player.sendMessage(warpName);
+    }
+
+    private void onFavorite(int slot) {
+
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -100,7 +129,10 @@ public class WarpGUI extends GUI {
                     else
                         return;
                 } else if (slot % 9 > 0 && slot % 9 < 8) {
-                    onWarp(slot);
+                    if (event.getClick() == ClickType.SHIFT_RIGHT)
+                        onFavorite(slot);
+                    else
+                        onWarp(slot);
                 }
                 player.closeInventory();
             }

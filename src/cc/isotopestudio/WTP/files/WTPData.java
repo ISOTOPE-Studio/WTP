@@ -99,18 +99,6 @@ public class WTPData {
         return null;
     }
 
-    public static String getAlias(String name, WTP plugin) {
-        if (warpData.isSet(name + ".alias"))
-            return warpData.getString(name + ".alias");
-        return null;
-    }
-
-    public static String getMsg(String name, WTP plugin) {
-        if (warpData.isSet(name + ".welcome"))
-            return warpData.getString(name + ".welcome");
-        return null;
-    }
-
     public static String getWarpDes(String name) {
         StringBuilder msg = new StringBuilder("    ").append(ChatColor.GOLD);
         String alias = getAlias(name);
