@@ -4,11 +4,12 @@
 
 package cc.isotopestudio.WTP.commands;
 
+import cc.isotopestudio.WTP.gui.WarpGUI;
 import cc.isotopestudio.WTP.util.S;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class CommandWlist implements CommandExecutor {
     public String[][] warpListMsg;
@@ -19,6 +20,10 @@ public class CommandWlist implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("wlist")) {
             if (pages > 0) {
                 if (args.length == 0) {
+                    if (sender instanceof Player) {
+                        Player player = (Player) sender;
+                        new WarpGUI(player, 0).open(player);
+                    }
                     sendWlistMsg(sender, 0);
                     return true;
                 }

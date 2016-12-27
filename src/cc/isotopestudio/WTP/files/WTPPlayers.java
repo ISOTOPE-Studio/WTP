@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -91,6 +92,37 @@ public class WTPPlayers {
 
     public static List<String> getPlayerWarpsList(String player) {
         return playerData.getStringList(player + ".warps");
+    }
+
+    public static List<String> getPlayerFavoriteWarps(String player) {
+        return playerData.getStringList(player + ".favorite");
+    }
+
+    public static void addPlayerFavoriteWarp(String player, String warpName) {
+        List<String> list = new ArrayList<>(playerData.getStringList(player + ".favorite"));
+        if (!list.contains(warpName)) {
+            list.add(warpName);
+            playerData.set(player + ".favorite", list);
+            playerData.save();
+        }
+        list = new ArrayList<>(warpData.getStringList(warpName + ".favorite"));
+        if (!list.contains(player)) {
+            list.add(player);
+            warpData.set(warpName + ".favorite", list);
+            warpData.save();
+        }
+    }
+
+    public static void removePlayerFavoriteWarp(String player, String warpName) {
+        List<String> list = new ArrayList<>(playerData.getStringList(player + ".favorite"));
+        list.remove(warpName);
+        playerData.set(player + ".favorite", list);
+        playerData.save();
+
+        list = new ArrayList<>(warpData.getStringList(warpName + ".favorite"));
+        list.remove(player);
+        warpData.set(warpName + ".favorite", list);
+        warpData.save();
     }
 
 }

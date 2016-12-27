@@ -6,6 +6,7 @@ package cc.isotopestudio.WTP.commands;
 
 import cc.isotopestudio.WTP.WTP;
 import cc.isotopestudio.WTP.files.WTPPlayers;
+import cc.isotopestudio.WTP.gui.FavoriteGUI;
 import cc.isotopestudio.WTP.gui.WarpGUI;
 import cc.isotopestudio.WTP.util.S;
 import org.bukkit.ChatColor;
@@ -25,7 +26,7 @@ public class CommandW implements CommandExecutor {
                     sender.sendMessage(S.toPrefixRed("你没有权限传送"));
                     return true;
                 }
-                new WarpGUI(player, 0).open(player);
+                new FavoriteGUI(player).open(player);
                 if (args != null && args.length == 1) {
                     WTPPlayers.tpWarp(player, args[0]);
                     return true;

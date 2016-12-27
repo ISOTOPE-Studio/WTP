@@ -21,36 +21,28 @@ import java.util.*;
 
 import static cc.isotopestudio.WTP.WTP.plugin;
 
-public class WarpGUI extends GUI {
+public class FavoriteGUI extends GUI {
 
-    public static Set<String> keys;
-
-    private List<String> warps;
     private Map<Integer, String> slotIDMap;
-    private List<String> favorites;
 
-    public WarpGUI(Player player, int page) {
-        super(S.toBoldGold("地标列表") + "[" + player.getName() + "]", 4 * 9, player);
-        this.page = page;
+    public FavoriteGUI(Player player) {
+        super(S.toBoldGold("收藏地标列表") + "[" + player.getName() + "]", 6 * 9, player);
+        this.page = 0;
 
-        warps = new ArrayList<>(keys);
+        List<String> warps = new ArrayList<>(WTPPlayers.getPlayerFavoriteWarps(player.getName()));
         slotIDMap = new HashMap<>();
-        favorites = WTPPlayers.getPlayerFavoriteWarps(player.getName());
 
-        if (page > 0) {
-            setOption(0, new ItemStack(Material.ARROW), S.toBoldGold("上一页"), S.toRed("第 " + (page + 1) + " 页"));
-            setOption(27, new ItemStack(Material.ARROW), S.toBoldGold("上一页"), S.toRed("第 " + (page + 1) + " 页"));
-        }
-        if (page < getTotalPage() - 1) {
-            setOption(8, new ItemStack(Material.ARROW), S.toBoldGold("下一页"), S.toRed("第 " + (page + 1) + " 页"));
-            setOption(35, new ItemStack(Material.ARROW), S.toBoldGold("下一页"), S.toRed("第 " + (page + 1) + " 页"));
-        }
-        for (int i = 0; i < 4 * 7; i++) {
-            if (i + page * 4 * 7 < warps.size()) {
+        setOption(0, new ItemStack(Material.ARROW), S.toBoldGold("查看所有地标"), S.toRed(""));
+        setOption(45, new ItemStack(Material.ARROW), S.toBoldGold("查看所有地标"), S.toRed(""));
+        setOption(8, new ItemStack(Material.ARROW), S.toBoldGold("查看所有地标"), S.toRed(""));
+        setOption(53, new ItemStack(Material.ARROW), S.toBoldGold("查看所有地标"), S.toRed(""));
+
+        for (int i = 0; i < 6 * 7; i++) {
+            if (i + page * 6 * 7 < warps.size()) {
                 int row = i / 7;
                 int col = i % 7;
                 int pos = row * 9 + col + 1;
-                String warpName = warps.get(page * 4 * 7 + i);
+                String warpName = warps.get(page * 6 * 7 + i);
 
                 slotIDMap.put(pos, warpName);
 
@@ -69,10 +61,7 @@ public class WarpGUI extends GUI {
                 lore.add(S.toGold("拥有者: " + WTPData.getOwner(warpName)));
                 lore.add("");
                 lore.add(S.toItalicYellow("单击 传送"));
-                if (favorites.contains(warpName))
-                    lore.add(S.toGold("个人收藏"));
-                else
-                    lore.add(S.toItalicYellow("Shift + 右键 添加至个人收藏"));
+                lore.add(S.toItalicYellow("Shift + 右键 从个人收藏中删除"));
                 itemMeta.setLore(lore);
                 warpItem.setItemMeta(itemMeta);
 
@@ -81,28 +70,12 @@ public class WarpGUI extends GUI {
         }
     }
 
-    private void onNextPage() {
+    private void onDisplayAllWarp() {
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
             public void run() {
-                (new WarpGUI(player, page + 1)).open(player);
+                (new WarpGUI(player, 0)).open(player);
             }
         }, 2);
-    }
-
-    private void onPreviousPage() {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            public void run() {
-                (new WarpGUI(player, page - 1)).open(player);
-            }
-        }, 2);
-    }
-
-    private int getTotalPage() {
-        int size = warps.size();
-        int page = size / (7 * 4);
-        if (size % (7 * 4) != 0)
-            page++;
-        return page;
     }
 
 
@@ -111,14 +84,10 @@ public class WarpGUI extends GUI {
         WTPPlayers.tpWarp(player, warpName);
     }
 
-    private void onFavorite(int slot) {
+    private void onDisfavorite(int slot) {
         String warpName = slotIDMap.get(slot);
-        if (favorites.contains(warpName))
-            player.sendMessage(S.toPrefixRed(warpName + " 已经在个人收藏中"));
-        else {
-            WTPPlayers.addPlayerFavoriteWarp(player.getName(), warpName);
-            player.sendMessage(S.toPrefixYellow("成功将 " + warpName + " 添加至个人收藏"));
-        }
+        WTPPlayers.removePlayerFavoriteWarp(player.getName(), warpName);
+        player.sendMessage(S.toPrefixYellow("成功将 " + warpName + " 从个人收藏中删除"));
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -131,19 +100,11 @@ public class WarpGUI extends GUI {
             }
 
             if (optionIcons[slot] != null) {
-                if (slot == 0 || slot == 27) {
-                    if (page > 0)
-                        onPreviousPage();
-                    else
-                        return;
-                } else if (slot == 8 || slot == 35) {
-                    if (page < getTotalPage() - 1)
-                        onNextPage();
-                    else
-                        return;
+                if (slot == 0 || slot == 45 || slot == 8 || slot == 53) {
+                    onDisplayAllWarp();
                 } else if (slot % 9 > 0 && slot % 9 < 8) {
                     if (event.getClick() == ClickType.SHIFT_RIGHT)
-                        onFavorite(slot);
+                        onDisfavorite(slot);
                     else
                         onWarp(slot);
                 }

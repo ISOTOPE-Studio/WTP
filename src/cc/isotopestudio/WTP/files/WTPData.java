@@ -36,15 +36,16 @@ public class WTPData {
 
     public static void deleteWarp(String name) {
         List<String> warpsList = playerData.getStringList(getOwner(name) + ".warps");
-        int index = 0;
-        for (String temp : warpsList) {
-            if (temp.equals(name)) {
-                warpsList.remove(index);
-                break;
-            }
-            index++;
-        }
+        warpsList.remove(name);
         playerData.set(getOwner(name) + ".warps", warpsList);
+
+        List<String> favoritePlayerList = warpData.getStringList(name + ".favorite");
+        for (String player : favoritePlayerList) {
+            List<String> playerFavorites = playerData.getStringList(player + ".favorite");
+            if (playerFavorites.remove(name)) {
+                playerData.set(player + ".favorite", playerFavorites);
+            }
+        }
 
         warpData.set(name, null);
 
