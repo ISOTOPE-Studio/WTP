@@ -23,6 +23,7 @@ public class CommandWlist implements CommandExecutor {
                     if (sender instanceof Player) {
                         Player player = (Player) sender;
                         new WarpGUI(player, 0).open(player);
+                        return true;
                     }
                     sendWlistMsg(sender, 0);
                     return true;

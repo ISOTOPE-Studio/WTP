@@ -6,7 +6,6 @@ package cc.isotopestudio.WTP.tasks;
 
 import cc.isotopestudio.WTP.WTP;
 import cc.isotopestudio.WTP.files.WTPData;
-import cc.isotopestudio.WTP.gui.WarpGUI;
 import cc.isotopestudio.WTP.util.S;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;

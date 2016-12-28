@@ -105,7 +105,6 @@ public class WarpGUI extends GUI {
         return page;
     }
 
-
     private void onWarp(int slot) {
         String warpName = slotIDMap.get(slot);
         WTPPlayers.tpWarp(player, warpName);
@@ -115,7 +114,9 @@ public class WarpGUI extends GUI {
         String warpName = slotIDMap.get(slot);
         if (favorites.contains(warpName))
             player.sendMessage(S.toPrefixRed(warpName + " 已经在个人收藏中"));
-        else {
+        else if (favorites.size() >= 42) {
+            player.sendMessage(S.toPrefixRed("不能再添加更多的个人收藏了"));
+        } else {
             WTPPlayers.addPlayerFavoriteWarp(player.getName(), warpName);
             player.sendMessage(S.toPrefixYellow("成功将 " + warpName + " 添加至个人收藏"));
         }

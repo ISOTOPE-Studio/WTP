@@ -9,8 +9,10 @@ import cc.isotopestudio.WTP.commands.CommandWlist;
 import cc.isotopestudio.WTP.commands.CommandWtp;
 import cc.isotopestudio.WTP.commands.CommandWtpadmin;
 import cc.isotopestudio.WTP.files.WTPConfig;
+import cc.isotopestudio.WTP.listener.ChatListener;
 import cc.isotopestudio.WTP.metrics.Metrics;
 import cc.isotopestudio.WTP.tasks.UpdateWlist;
+import cc.isotopestudio.WTP.tasks.Updater;
 import cc.isotopestudio.WTP.util.PluginFile;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
@@ -21,7 +23,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 public final class WTP extends JavaPlugin {
-    public static final String version = "v1.1.1";
+    public static final String version = "2.0.0";
     private static final String FileVersion = "1";
     public static final String prefix = (new StringBuilder()).append(ChatColor.GOLD).append("[").append(ChatColor.ITALIC)
             .append(ChatColor.BOLD).append("公共地标").append(ChatColor.RESET).append(ChatColor.GOLD).append("]")
@@ -36,8 +38,7 @@ public final class WTP extends JavaPlugin {
     public static PluginFile warpData;
     public static PluginFile playerData;
 
-
-    public CommandWlist commandWlist;
+    public static CommandWlist commandWlist;
 
     @Override
     public void onEnable() {
@@ -71,8 +72,11 @@ public final class WTP extends JavaPlugin {
         this.getCommand("wtp").setExecutor(new CommandWtp());
         this.getCommand("wtpadmin").setExecutor(new CommandWtpadmin());
 
+        plugin.getServer().getPluginManager().registerEvents(new ChatListener(), plugin);
+
         UpdateWlist.updateWlist(this);
         new UpdateWlist(this).runTaskTimer(this, 3000, 3000);
+        new Updater().runTaskTimer(this, 20, 60 * 60 * 20);
 
         try {
             Metrics metrics = new Metrics(this);
@@ -81,8 +85,8 @@ public final class WTP extends JavaPlugin {
             e.printStackTrace();
         }
 
-        getLogger().info("公共地标 成功加载!");
-        getLogger().info("公共地标 由ISOTOPE Studio制作!");
+        getLogger().info("WTP 公共地标 " + getDescription().getVersion() + "成功加载!");
+        getLogger().info("WTP 公共地标 由ISOTOPE Studio制作!");
         getLogger().info("http://isotopestudio.cc");
     }
 
@@ -109,7 +113,6 @@ public final class WTP extends JavaPlugin {
         }
         return (econ != null);
     }
-
 
 
 }

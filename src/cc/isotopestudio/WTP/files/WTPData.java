@@ -4,7 +4,6 @@
 
 package cc.isotopestudio.WTP.files;
 
-import cc.isotopestudio.WTP.WTP;
 import cc.isotopestudio.WTP.tasks.UpdateWlist;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

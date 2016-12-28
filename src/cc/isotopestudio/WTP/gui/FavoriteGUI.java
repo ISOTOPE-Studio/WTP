@@ -17,57 +17,132 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static cc.isotopestudio.WTP.WTP.plugin;
 
 public class FavoriteGUI extends GUI {
 
-    private Map<Integer, String> slotIDMap;
+    private final Map<Integer, String> slotIDMap;
+    private List<String> favoriteWarps;
+    private List<String> playerWarps;
 
     public FavoriteGUI(Player player) {
-        super(S.toBoldGold("收藏地标列表") + "[" + player.getName() + "]", 6 * 9, player);
-        this.page = 0;
+        this(player, 0);
+    }
 
-        List<String> warps = new ArrayList<>(WTPPlayers.getPlayerFavoriteWarps(player.getName()));
+    private FavoriteGUI(Player player, int page) {
+        super(S.toBoldGold("收藏地标列表") + "[" + player.getName() + "]", 6 * 9, player);
+        this.page = page;
+
+        if (page < 1)
+            favoriteWarps = WTPPlayers.getPlayerFavoriteWarps(player.getName());
+        else {
+            playerWarps = WTPPlayers.getPlayerWarpsList(player.getName());
+            setName(S.toBoldGold(" 我的地标") + "[" + player.getName() + "]");
+        }
         slotIDMap = new HashMap<>();
 
-        setOption(0, new ItemStack(Material.ARROW), S.toBoldGold("查看所有地标"), S.toRed(""));
-        setOption(45, new ItemStack(Material.ARROW), S.toBoldGold("查看所有地标"), S.toRed(""));
-        setOption(8, new ItemStack(Material.ARROW), S.toBoldGold("查看所有地标"), S.toRed(""));
-        setOption(53, new ItemStack(Material.ARROW), S.toBoldGold("查看所有地标"), S.toRed(""));
+        setOption(0, new ItemStack(Material.COMPASS), S.toBoldGold("查看所有地标"), S.toRed(""));
+        setOption(8, new ItemStack(Material.COMPASS), S.toBoldGold("查看所有地标"), S.toRed(""));
+        if (page > 0)
+            setOption(45, new ItemStack(Material.ARROW), S.toBoldGold("上一页"), S.toRed(""));
+        if (page < getTotalPage() - 1)
+            setOption(53, new ItemStack(Material.ARROW), S.toBoldGold("下一页"), S.toRed(""));
 
         for (int i = 0; i < 6 * 7; i++) {
-            if (i + page * 6 * 7 < warps.size()) {
-                int row = i / 7;
-                int col = i % 7;
-                int pos = row * 9 + col + 1;
-                String warpName = warps.get(page * 6 * 7 + i);
+            if (page < 1) {
+                if (i + page * 6 * 7 < favoriteWarps.size()) {
+                    int row = i / 7;
+                    int col = i % 7;
+                    int pos = row * 9 + col + 1;
+                    String warpName = favoriteWarps.get(page * 6 * 7 + i);
 
-                slotIDMap.put(pos, warpName);
+                    slotIDMap.put(pos, warpName);
 
-                ItemStack warpItem = new ItemStack(Material.WOOL, 1, (short) (Math.random() * 16));
-                ItemMeta itemMeta = warpItem.getItemMeta();
-                itemMeta.setDisplayName(S.toBoldRed(warpName));
-                List<String> lore = new ArrayList<>();
-                String alias = WTPData.getAlias(warpName);
-                if (alias != null) {
-                    lore.add(S.toBoldDarkGreen(alias));
-                }
-                String msg = WTPData.getMsg(warpName);
-                if (msg != null) {
-                    lore.add(S.toGreen(msg));
-                }
-                lore.add(S.toGold("拥有者: " + WTPData.getOwner(warpName)));
-                lore.add("");
-                lore.add(S.toItalicYellow("单击 传送"));
-                lore.add(S.toItalicYellow("Shift + 右键 从个人收藏中删除"));
-                itemMeta.setLore(lore);
-                warpItem.setItemMeta(itemMeta);
+                    ItemStack warpItem = new ItemStack(Material.WOOL, 1, (short) (Math.random() * 16));
+                    ItemMeta itemMeta = warpItem.getItemMeta();
+                    itemMeta.setDisplayName(S.toBoldRed(warpName));
+                    List<String> lore = new ArrayList<>();
+                    String alias = WTPData.getAlias(warpName);
+                    if (alias != null) {
+                        lore.add(S.toBoldDarkGreen(alias));
+                    }
+                    String msg = WTPData.getMsg(warpName);
+                    if (msg != null) {
+                        lore.add(S.toGreen(msg));
+                    }
+                    lore.add(S.toGold("拥有者: " + WTPData.getOwner(warpName)));
+                    lore.add("");
+                    lore.add(S.toItalicYellow("单击 传送"));
+                    lore.add(S.toItalicYellow("Shift + 右键 从个人收藏中删除"));
+                    itemMeta.setLore(lore);
+                    warpItem.setItemMeta(itemMeta);
 
-                setOption(pos, warpItem);
+                    setOption(pos, warpItem);
+                } else break;
+            } else {
+                if (i + (page - 1) * 6 * 7 < playerWarps.size()) {
+                    int row = i / 7;
+                    int col = i % 7;
+                    int pos = row * 9 + col + 1;
+                    String warpName = playerWarps.get((page - 1) * 6 * 7 + i);
+
+                    slotIDMap.put(pos, warpName);
+
+                    ItemStack warpItem = new ItemStack(Material.WOOL, 1, (short) (Math.random() * 16));
+                    ItemMeta itemMeta = warpItem.getItemMeta();
+                    itemMeta.setDisplayName(S.toBoldRed(warpName));
+                    List<String> lore = new ArrayList<>();
+                    String alias = WTPData.getAlias(warpName);
+                    if (alias != null) {
+                        lore.add(S.toBoldDarkGreen(alias));
+                    }
+                    String msg = WTPData.getMsg(warpName);
+                    if (msg != null) {
+                        lore.add(S.toGreen(msg));
+                    }
+                    lore.add(S.toGold("拥有的地标"));
+                    lore.add("");
+                    lore.add(S.toItalicYellow("单击 传送"));
+                    lore.add(S.toItalicYellow("Shift + 右键 管理此地标"));
+                    itemMeta.setLore(lore);
+                    warpItem.setItemMeta(itemMeta);
+
+                    setOption(pos, warpItem);
+                } else break;
             }
         }
+    }
+
+    private void onNextPage() {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            public void run() {
+                (new FavoriteGUI(player, page + 1)).open(player);
+            }
+        }, 2);
+    }
+
+    private void onPreviousPage() {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            public void run() {
+                (new FavoriteGUI(player, page - 1)).open(player);
+            }
+        }, 2);
+    }
+
+    private int getTotalPage() {
+        if (playerWarps == null) {
+            return 2;
+        }
+        int size = playerWarps.size();
+        int page = size / (7 * 4);
+        if (size % (7 * 4) != 0)
+            page++;
+        return page + 1;
     }
 
     private void onDisplayAllWarp() {
@@ -90,6 +165,15 @@ public class FavoriteGUI extends GUI {
         player.sendMessage(S.toPrefixYellow("成功将 " + warpName + " 从个人收藏中删除"));
     }
 
+    private void onManage(int slot) {
+        String warpName = slotIDMap.get(slot);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            public void run() {
+                new ManagerGUI(player, warpName).open(player);
+            }
+        }, 2);
+    }
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onInventoryClick(final InventoryClickEvent event) {
         if (event.getInventory().getTitle().equals(name) && playerName.equals(event.getWhoClicked().getName())) {
@@ -100,17 +184,31 @@ public class FavoriteGUI extends GUI {
             }
 
             if (optionIcons[slot] != null) {
-                if (slot == 0 || slot == 45 || slot == 8 || slot == 53) {
+                if (slot == 0 || slot == 8) {
                     onDisplayAllWarp();
-                } else if (slot % 9 > 0 && slot % 9 < 8) {
-                    if (event.getClick() == ClickType.SHIFT_RIGHT)
-                        onDisfavorite(slot);
+                } else if (slot == 45) {
+                    if (page > 0)
+                        onPreviousPage();
                     else
+                        return;
+                } else if (slot == 53) {
+                    if (page < getTotalPage() - 1)
+                        onNextPage();
+                    else
+                        return;
+                } else if (slot % 9 > 0 && slot % 9 < 8) {
+                    if (event.getClick() == ClickType.SHIFT_RIGHT) {
+                        if (page < 1) {
+                            onDisfavorite(slot);
+                        } else {
+                            onManage(slot);
+                        }
+                    } else
                         onWarp(slot);
                 }
                 player.closeInventory();
             }
         }
     }
-
 }
+

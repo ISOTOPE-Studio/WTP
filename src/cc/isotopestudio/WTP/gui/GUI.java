@@ -4,9 +4,6 @@
 
 package cc.isotopestudio.WTP.gui;
 
-import java.util.Arrays;
-import java.util.HashMap;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +15,8 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
+
+import java.util.Arrays;
 
 import static cc.isotopestudio.WTP.WTP.plugin;
 
@@ -26,7 +24,7 @@ public abstract class GUI implements Listener {
 
 	// From: https://bukkit.org/threads/icon-menu.108342
 
-	final String name;
+	String name;
 	final int size;
 	String[] optionNames;
 	ItemStack[] optionIcons;
@@ -43,6 +41,10 @@ public abstract class GUI implements Listener {
 		this.optionNames = new String[size];
 		this.optionIcons = new ItemStack[size];
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	void setOption(int position, ItemStack icon, String name, String... info) {

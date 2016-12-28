@@ -4,10 +4,8 @@
 
 package cc.isotopestudio.WTP.commands;
 
-import cc.isotopestudio.WTP.WTP;
 import cc.isotopestudio.WTP.files.WTPPlayers;
 import cc.isotopestudio.WTP.gui.FavoriteGUI;
-import cc.isotopestudio.WTP.gui.WarpGUI;
 import cc.isotopestudio.WTP.util.S;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -26,15 +24,15 @@ public class CommandW implements CommandExecutor {
                     sender.sendMessage(S.toPrefixRed("你没有权限传送"));
                     return true;
                 }
-                new FavoriteGUI(player).open(player);
                 if (args != null && args.length == 1) {
                     WTPPlayers.tpWarp(player, args[0]);
                     return true;
                 } else {
-                    sender.sendMessage(S.toPrefixRed("/w <地标名字>") +
-                            ChatColor.GRAY + " - " + ChatColor.LIGHT_PURPLE +
-                            "传送到公共地标，输入/wlist查看地标列表");
+                    new FavoriteGUI(player).open(player);
                     return true;
+//                    sender.sendMessage(S.toPrefixRed("/w <地标名字>") +
+//                            ChatColor.GRAY + " - " + ChatColor.LIGHT_PURPLE +
+//                            "传送到公共地标，输入/wlist查看地标列表");
                 }
             } else {
                 sender.sendMessage(S.toPrefixRed("只有玩家能执行这个命令！"));
