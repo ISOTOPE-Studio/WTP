@@ -2,12 +2,15 @@
  * Copyright (c) 2016. ISOTOPE Studio
  */
 
-package cc.isotopestudio.WTP.files;
+package cc.isotopestudio.WTP.data;
 
 import cc.isotopestudio.WTP.tasks.UpdateWlist;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 import java.util.Set;
@@ -25,6 +28,7 @@ public class WTPData {
         warpData.set(name + ".Z", loc.getZ());
         warpData.set(name + ".pitch", loc.getPitch());
         warpData.set(name + ".yaw", loc.getYaw());
+        setItem(name, new ItemStack(Material.WOOL, 1, (short) (Math.random() * 16)));
         List<String> warpList = playerData.getStringList(player.getName() + ".warps");
         warpList.add(name);
         playerData.set(player.getName() + ".warps", warpList);
@@ -62,12 +66,12 @@ public class WTPData {
         return false;
     }
 
-    public static void addAlias(String name, String alias) {
+    public static void setAlias(String name, String alias) {
         warpData.set(name + ".alias", alias);
         warpData.save();
     }
 
-    public static void addMsg(String name, String msg) {
+    public static void setMsg(String name, String msg) {
         warpData.set(name + ".welcome", msg);
         warpData.save();
     }
@@ -81,6 +85,19 @@ public class WTPData {
         warpData.set(name + ".pitch", loc.getPitch());
         warpData.set(name + ".yaw", loc.getYaw());
         warpData.save();
+    }
+
+    public static void setItem(String name, ItemStack item) {
+        warpData.set(name + ".item", item);
+        warpData.save();
+    }
+
+    public static ItemStack getItem(String name) {
+        if (!warpData.isSet(name + ".item")) {
+            warpData.set(name + ".item", new ItemStack(Material.WOOL, 1, (short) (Math.random() * 16)));
+            warpData.save();
+        }
+        return warpData.getItemStack(name + ".item");
     }
 
     public static String getOwner(String name) {

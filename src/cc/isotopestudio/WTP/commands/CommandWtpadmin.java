@@ -5,9 +5,9 @@
 package cc.isotopestudio.WTP.commands;
 
 import cc.isotopestudio.WTP.WTP;
-import cc.isotopestudio.WTP.files.WTPConfig;
-import cc.isotopestudio.WTP.files.WTPData;
-import cc.isotopestudio.WTP.files.WTPPlayers;
+import cc.isotopestudio.WTP.data.WTPConfig;
+import cc.isotopestudio.WTP.data.WTPData;
+import cc.isotopestudio.WTP.data.WTPPlayers;
 import cc.isotopestudio.WTP.util.S;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -5,9 +5,9 @@
 package cc.isotopestudio.WTP.commands;
 
 import cc.isotopestudio.WTP.WTP;
-import cc.isotopestudio.WTP.files.WTPConfig;
-import cc.isotopestudio.WTP.files.WTPData;
-import cc.isotopestudio.WTP.files.WTPPlayers;
+import cc.isotopestudio.WTP.data.WTPConfig;
+import cc.isotopestudio.WTP.data.WTPData;
+import cc.isotopestudio.WTP.data.WTPPlayers;
 import cc.isotopestudio.WTP.util.S;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -77,7 +77,7 @@ public class CommandWtp implements CommandExecutor {
                             return true;
                         }
                         WTP.econ.withdrawPlayer(player.getName(), WTPConfig.aliasFee);
-                        WTPData.addAlias(args[1], alias);
+                        WTPData.setAlias(args[1], alias);
                         sender.sendMessage(S.toPrefixGreen("成功添加别名！"));
                         return true;
                     } else {
@@ -104,7 +104,7 @@ public class CommandWtp implements CommandExecutor {
                             return true;
                         }
                         WTP.econ.withdrawPlayer(player.getName(), WTPConfig.welcomeFee);
-                        WTPData.addMsg(args[1], msg);
+                        WTPData.setMsg(args[1], msg);
                         sender.sendMessage(S.toPrefixGreen("成功添加欢迎信息！"));
                         return true;
                     } else {

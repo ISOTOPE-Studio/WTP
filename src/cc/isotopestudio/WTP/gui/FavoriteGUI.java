@@ -4,8 +4,8 @@
 
 package cc.isotopestudio.WTP.gui;
 
-import cc.isotopestudio.WTP.files.WTPData;
-import cc.isotopestudio.WTP.files.WTPPlayers;
+import cc.isotopestudio.WTP.data.WTPData;
+import cc.isotopestudio.WTP.data.WTPPlayers;
 import cc.isotopestudio.WTP.util.S;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -63,7 +63,7 @@ public class FavoriteGUI extends GUI {
 
                     slotIDMap.put(pos, warpName);
 
-                    ItemStack warpItem = new ItemStack(Material.WOOL, 1, (short) (Math.random() * 16));
+                    ItemStack warpItem = WTPData.getItem(warpName);
                     ItemMeta itemMeta = warpItem.getItemMeta();
                     itemMeta.setDisplayName(S.toBoldRed(warpName));
                     List<String> lore = new ArrayList<>();
@@ -93,7 +93,7 @@ public class FavoriteGUI extends GUI {
 
                     slotIDMap.put(pos, warpName);
 
-                    ItemStack warpItem = new ItemStack(Material.WOOL, 1, (short) (Math.random() * 16));
+                    ItemStack warpItem = WTPData.getItem(warpName);
                     ItemMeta itemMeta = warpItem.getItemMeta();
                     itemMeta.setDisplayName(S.toBoldRed(warpName));
                     List<String> lore = new ArrayList<>();

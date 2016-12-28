@@ -56,57 +56,30 @@ public class PluginFile extends YamlConfiguration {
             try {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
-
-            } catch (IOException exception) {
-                exception.printStackTrace();
-                plugin.getLogger().severe("Error while creating file " + file.getName());
-            }
-        }
-
-        try {
-            load(file);
-
-            if (defaults != null) {
-                OutputStream os = new FileOutputStream(file);
-                int bytesRead = 0;
-                byte[] buffer = new byte[8192];
-                InputStream resource = plugin.getResource(defaults);
-                while ((bytesRead = resource.read(buffer, 0, 8192)) != -1) {
-                    os.write(buffer, 0, bytesRead);
+                if (defaults != null) {
+                    OutputStream os = new FileOutputStream(file);
+                    int bytesRead = 0;
+                    byte[] buffer = new byte[8192];
+                    InputStream resource = plugin.getResource(defaults);
+                    while ((bytesRead = resource.read(buffer, 0, 8192)) != -1) {
+                        os.write(buffer, 0, bytesRead);
+                    }
+                    os.close();
+                    resource.close();
+                    load(file);
                 }
-                os.close();
-                resource.close();
-                load(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+                plugin.getLogger().severe("Error while creating file " + file.getName());
+            } catch (InvalidConfigurationException e) {
+                e.printStackTrace();
             }
-
+        } else try {
+            load(file);
         } catch (IOException | InvalidConfigurationException exception) {
             exception.printStackTrace();
             plugin.getLogger().severe("Error while loading file " + file.getName());
         }
-
-        DumperOptions yamlOptions = null;
-        try {
-            Field f = YamlConfiguration.class.getDeclaredField("yamlOptions");
-            f.setAccessible(true);
-
-            yamlOptions = new DumperOptions() {
-                @Override
-                public void setAllowUnicode(boolean allowUnicode) {
-                    super.setAllowUnicode(false);
-                }
-
-                @Override
-                public void setLineBreak(LineBreak lineBreak) {
-                    super.setLineBreak(LineBreak.getPlatformLineBreak());
-                }
-            };
-
-            yamlOptions.setLineBreak(DumperOptions.LineBreak.getPlatformLineBreak());
-            f.set(this, yamlOptions);
-        } catch (ReflectiveOperationException ex) {
-            ex.printStackTrace();
-        }
-
     }
 
     /**

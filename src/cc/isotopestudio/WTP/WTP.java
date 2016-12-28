@@ -8,8 +8,8 @@ import cc.isotopestudio.WTP.commands.CommandW;
 import cc.isotopestudio.WTP.commands.CommandWlist;
 import cc.isotopestudio.WTP.commands.CommandWtp;
 import cc.isotopestudio.WTP.commands.CommandWtpadmin;
-import cc.isotopestudio.WTP.files.WTPConfig;
-import cc.isotopestudio.WTP.listener.ChatListener;
+import cc.isotopestudio.WTP.data.WTPConfig;
+import cc.isotopestudio.WTP.listener.WaitListener;
 import cc.isotopestudio.WTP.metrics.Metrics;
 import cc.isotopestudio.WTP.tasks.UpdateWlist;
 import cc.isotopestudio.WTP.tasks.Updater;
@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 
 public final class WTP extends JavaPlugin {
     public static final String version = "2.0.0";
-    private static final String FileVersion = "1";
+    private static final String FileVersion = "2";
     public static final String prefix = (new StringBuilder()).append(ChatColor.GOLD).append("[").append(ChatColor.ITALIC)
             .append(ChatColor.BOLD).append("公共地标").append(ChatColor.RESET).append(ChatColor.GOLD).append("]")
             .append(ChatColor.RESET).toString();
@@ -59,7 +59,9 @@ public final class WTP extends JavaPlugin {
         getLogger().info("加载配置文件中");
 
         if (!getConfig().getString("FileVersion").equals(FileVersion)) {
-            getLogger().info("公共地标 配置文件错误!");
+            getLogger().warning("公共地标 配置文件错误!");
+            getLogger().warning("请更新配置文件");
+            getLogger().warning("查看 http://wiki.isotopestudio.cc/doku.php?id=wtp:config");
             onDisable();
             return;
         }
@@ -72,7 +74,7 @@ public final class WTP extends JavaPlugin {
         this.getCommand("wtp").setExecutor(new CommandWtp());
         this.getCommand("wtpadmin").setExecutor(new CommandWtpadmin());
 
-        plugin.getServer().getPluginManager().registerEvents(new ChatListener(), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new WaitListener(), plugin);
 
         UpdateWlist.updateWlist(this);
         new UpdateWlist(this).runTaskTimer(this, 3000, 3000);
@@ -93,7 +95,7 @@ public final class WTP extends JavaPlugin {
     public void onReload() {
         playerData.reload();
         warpData.reload();
-        this.reloadConfig();
+        config.reload();
         UpdateWlist.updateWlist(this);
         WTPConfig.update();
     }

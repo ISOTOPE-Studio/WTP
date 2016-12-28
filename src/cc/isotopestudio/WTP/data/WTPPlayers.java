@@ -2,7 +2,7 @@
  * Copyright (c) 2016. ISOTOPE Studio
  */
 
-package cc.isotopestudio.WTP.files;
+package cc.isotopestudio.WTP.data;
 
 import cc.isotopestudio.WTP.WTP;
 import org.bukkit.Bukkit;

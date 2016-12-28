@@ -4,10 +4,9 @@
 
 package cc.isotopestudio.WTP.commands;
 
-import cc.isotopestudio.WTP.files.WTPPlayers;
+import cc.isotopestudio.WTP.data.WTPPlayers;
 import cc.isotopestudio.WTP.gui.FavoriteGUI;
 import cc.isotopestudio.WTP.util.S;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

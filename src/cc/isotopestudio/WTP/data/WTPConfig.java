@@ -2,7 +2,7 @@
  * Copyright (c) 2016. ISOTOPE Studio
  */
 
-package cc.isotopestudio.WTP.files;
+package cc.isotopestudio.WTP.data;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -17,6 +17,7 @@ public class WTPConfig {
     public static double welcomeFee;
     public static double relocationFee;
     private static double deleteFee;
+    public static double itemFee;
     public static HashMap<String, Integer> limitation;
 
     public static void update() {
@@ -25,6 +26,7 @@ public class WTPConfig {
         welcomeFee = config.getDouble("Price.welcome");
         relocationFee = config.getDouble("Price.relocation");
         deleteFee = config.getDouble("Price.delete");
+        deleteFee = config.getDouble("Price.item");
 
         limitation = new HashMap<>();
         limitation.put("default", 0);
