@@ -58,6 +58,7 @@ public class WarpGUI extends GUI {
                 ItemMeta itemMeta = warpItem.getItemMeta();
                 itemMeta.setDisplayName(S.toBoldRed(warpName));
                 List<String> lore = new ArrayList<>();
+                lore.add(S.toGray("---------------"));
                 String alias = WTPData.getAlias(warpName);
                 if (alias != null) {
                     lore.add(S.toBoldDarkGreen(alias));

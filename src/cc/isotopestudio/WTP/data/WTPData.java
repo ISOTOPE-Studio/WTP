@@ -88,7 +88,7 @@ public class WTPData {
     }
 
     public static void setItem(String name, ItemStack item) {
-        warpData.set(name + ".item", item);
+        warpData.set(name + ".item", item.clone());
         warpData.save();
     }
 

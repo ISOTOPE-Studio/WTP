@@ -87,8 +87,7 @@ public class CommandWtpadmin implements CommandExecutor {
                             return true;
                         }
                         WTPData.deleteWarp(args[1]);
-                        sender.sendMessage(
-                                String.valueOf(ChatColor.AQUA) + "成功删除" + args[1]);
+                        sender.sendMessage(S.toPrefixYellow("成功删除" + args[1]));
                         return true;
                     } else {
                         sender.sendMessage(S.toPrefixRed("/wtpadmin delete <地标名字>" +

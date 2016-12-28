@@ -26,7 +26,7 @@ public class WTPConfig {
         welcomeFee = config.getDouble("Price.welcome");
         relocationFee = config.getDouble("Price.relocation");
         deleteFee = config.getDouble("Price.delete");
-        deleteFee = config.getDouble("Price.item");
+        itemFee = config.getDouble("Price.item");
 
         limitation = new HashMap<>();
         limitation.put("default", 0);
