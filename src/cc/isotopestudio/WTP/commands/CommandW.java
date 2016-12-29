@@ -19,10 +19,6 @@ public class CommandW implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("w")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
-                if (!player.hasPermission("WTP.teleport")) {
-                    sender.sendMessage(S.toPrefixRed("你没有权限传送"));
-                    return true;
-                }
                 if (args != null && args.length == 1) {
                     WTPPlayers.tpWarp(player, args[0]);
                     return true;

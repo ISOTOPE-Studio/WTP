@@ -4,6 +4,8 @@
 
 package cc.isotopestudio.WTP.gui;
 
+import cc.isotopestudio.WTP.WTP;
+import cc.isotopestudio.WTP.data.WTPConfig;
 import cc.isotopestudio.WTP.data.WTPData;
 import cc.isotopestudio.WTP.data.WTPPlayers;
 import cc.isotopestudio.WTP.util.S;
@@ -23,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 import static cc.isotopestudio.WTP.WTP.plugin;
+import static cc.isotopestudio.WTP.listener.WaitListener.createWait;
+import static cc.isotopestudio.WTP.listener.WaitListener.renameWait;
 
 public class FavoriteGUI extends GUI {
 
@@ -48,13 +52,26 @@ public class FavoriteGUI extends GUI {
 
         setOption(0, new ItemStack(Material.COMPASS), S.toBoldGold("查看所有地标"), S.toRed(""));
         setOption(8, new ItemStack(Material.COMPASS), S.toBoldGold("查看所有地标"), S.toRed(""));
+        setOption(18, new ItemStack(Material.PAPER), S.toBoldGold("创建新的地标"), S.toRed(""));
+        setOption(27, new ItemStack(Material.PAPER), S.toBoldGold("创建新的地标"), S.toRed(""));
+        setOption(26, new ItemStack(Material.PAPER), S.toBoldGold("创建新的地标"), S.toRed(""));
+        setOption(35, new ItemStack(Material.PAPER), S.toBoldGold("创建新的地标"), S.toRed(""));
+
         if (page > 0)
             setOption(45, new ItemStack(Material.ARROW), S.toBoldGold("上一页"), S.toRed(""));
         if (page < getTotalPage() - 1)
             setOption(53, new ItemStack(Material.ARROW), S.toBoldGold("下一页"), S.toRed(""));
 
+        if (page == 1) {
+            setOption(45, new ItemStack(Material.ARROW), S.toBoldGold("我的收藏"), S.toRed(""));
+        }
+        if (page == 0) {
+            setOption(53, new ItemStack(Material.ARROW), S.toBoldGold("我的地标"), S.toRed(""));
+        }
+
         for (int i = 0; i < 6 * 7; i++) {
             if (page < 1) {
+                // Favorites page
                 if (i + page * 6 * 7 < favoriteWarps.size()) {
                     int row = i / 7;
                     int col = i % 7;
@@ -70,7 +87,8 @@ public class FavoriteGUI extends GUI {
                     lore.add(S.toGray("---------------"));
                     String alias = WTPData.getAlias(warpName);
                     if (alias != null) {
-                        lore.add(S.toBoldDarkGreen(alias));
+                        itemMeta.setDisplayName(S.toBoldDarkGreen(alias) + S.toGray(" (" + warpName + ")"));
+//                      lore.add(S.toBoldDarkGreen(alias));
                     }
                     String msg = WTPData.getMsg(warpName);
                     if (msg != null) {
@@ -86,6 +104,7 @@ public class FavoriteGUI extends GUI {
                     setOption(pos, warpItem);
                 } else break;
             } else {
+                // My warps page
                 if (i + (page - 1) * 6 * 7 < playerWarps.size()) {
                     int row = i / 7;
                     int col = i % 7;
@@ -101,7 +120,8 @@ public class FavoriteGUI extends GUI {
                     lore.add(S.toGray("---------------"));
                     String alias = WTPData.getAlias(warpName);
                     if (alias != null) {
-                        lore.add(S.toBoldDarkGreen(alias));
+                        itemMeta.setDisplayName(S.toBoldDarkGreen(alias) + S.toGray(" (" + warpName + ")"));
+//                      lore.add(S.toBoldDarkGreen(alias));
                     }
                     String msg = WTPData.getMsg(warpName);
                     if (msg != null) {
@@ -155,6 +175,14 @@ public class FavoriteGUI extends GUI {
         }, 2);
     }
 
+    private void onNewWarp() {
+        if (WTP.econ.getBalance(player.getName()) < WTPConfig.createFee) {
+            player.sendMessage(S.toPrefixRed("你的金钱不足"));
+            return;
+        }
+        createWait.add(player);
+        player.sendMessage(S.toPrefixYellow("输入地标名 输入 cancel 取消"));
+    }
 
     private void onWarp(int slot) {
         String warpName = slotIDMap.get(slot);
@@ -198,6 +226,8 @@ public class FavoriteGUI extends GUI {
                         onNextPage();
                     else
                         return;
+                } else if (slot == 18 || slot == 27 || slot == 26 || slot == 35) {
+                    onNewWarp();
                 } else if (slot % 9 > 0 && slot % 9 < 8) {
                     if (event.getClick() == ClickType.SHIFT_RIGHT) {
                         if (page < 1) {
@@ -212,5 +242,6 @@ public class FavoriteGUI extends GUI {
             }
         }
     }
+
 }
 

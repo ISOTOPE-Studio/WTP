@@ -18,13 +18,13 @@ public class CommandWlist implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("wlist")) {
+            if (sender instanceof Player) {
+                Player player = (Player) sender;
+                new WarpGUI(player, 0).open(player);
+                return true;
+            }
             if (pages > 0) {
                 if (args.length == 0) {
-                    if (sender instanceof Player) {
-                        Player player = (Player) sender;
-                        new WarpGUI(player, 0).open(player);
-                        return true;
-                    }
                     sendWlistMsg(sender, 0);
                     return true;
                 }

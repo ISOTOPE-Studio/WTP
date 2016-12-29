@@ -5,6 +5,7 @@
 package cc.isotopestudio.WTP.data;
 
 import cc.isotopestudio.WTP.WTP;
+import cc.isotopestudio.WTP.util.S;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -22,6 +23,10 @@ public class WTPPlayers {
 
     public static void tpWarp(Player player, String name) {
         if (warpData.isSet(name)) {
+            if(!player.hasPermission("WTP.teleport")){
+                player.sendMessage(S.toPrefixRed("你没有权限传送"));
+                return;
+            }
             World world = Bukkit.getServer().getWorld(warpData.getString(name + ".world"));
             Location loc = new Location(world, warpData.getDouble(name + ".X"),
                     warpData.getDouble(name + ".Y"), warpData.getDouble(name + ".Z"),

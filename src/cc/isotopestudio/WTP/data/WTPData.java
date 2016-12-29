@@ -8,7 +8,6 @@ import cc.isotopestudio.WTP.tasks.UpdateWlist;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -34,7 +33,7 @@ public class WTPData {
         playerData.set(player.getName() + ".warps", warpList);
         playerData.save();
         warpData.save();
-        UpdateWlist.updateWlist(plugin);
+        UpdateWlist.updateWlist();
     }
 
     public static void deleteWarp(String name) {
@@ -54,7 +53,7 @@ public class WTPData {
 
         playerData.save();
         warpData.save();
-        UpdateWlist.updateWlist(plugin);
+        UpdateWlist.updateWlist();
     }
 
     public static boolean ifWarpExist(String name) {

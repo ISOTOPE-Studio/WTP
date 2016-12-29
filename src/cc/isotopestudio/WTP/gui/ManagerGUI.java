@@ -27,10 +27,12 @@ public class ManagerGUI extends GUI {
         super(S.toBoldGold("地标管理") + "[" + warp+ "]", 9, player);
         this.page = 0;
         this.warp = warp;
+        setOption(0, new ItemStack(Material.BOOK_AND_QUILL), S.toBoldGold(warp), S.toYellow("别名: " + WTPData.getAlias(warp)), S.toYellow("欢迎信息: " + WTPData.getMsg(warp)));
+
         setOption(1, new ItemStack(Material.NAME_TAG), S.toBoldGold("重命名"), S.toYellow("花费" + WTPConfig.aliasFee + "给公共地标添加别名"));
         setOption(2, new ItemStack(Material.PAPER), S.toBoldGold("设置欢迎信息"), S.toYellow("花费" + WTPConfig.welcomeFee + "给公共地标添加欢迎信息"));
         setOption(3, new ItemStack(Material.COMPASS), S.toBoldGold("重设位置"), S.toYellow("花费" + WTPConfig.relocationFee + "更改公共地标为当前位置"));
-        setOption(4, new ItemStack(Material.DIAMOND_SWORD), S.toBoldGold("设置物品"), S.toYellow("花费" + WTPConfig.itemFee + "更改公共地标为当前位置"));
+        setOption(4, new ItemStack(Material.DIAMOND_SWORD), S.toBoldGold("设置物品"), S.toYellow("花费" + WTPConfig.itemFee + "设置GUI中显示的物品"));
 
     }
 

@@ -76,8 +76,8 @@ public final class WTP extends JavaPlugin {
 
         plugin.getServer().getPluginManager().registerEvents(new WaitListener(), plugin);
 
-        UpdateWlist.updateWlist(this);
-        new UpdateWlist(this).runTaskTimer(this, 3000, 3000);
+        UpdateWlist.updateWlist();
+        new UpdateWlist().runTaskTimer(this, 3000, 3000);
         new Updater().runTaskTimer(this, 20, 60 * 60 * 20);
 
         try {
@@ -96,7 +96,7 @@ public final class WTP extends JavaPlugin {
         playerData.reload();
         warpData.reload();
         config.reload();
-        UpdateWlist.updateWlist(this);
+        UpdateWlist.updateWlist();
         WTPConfig.update();
     }
 

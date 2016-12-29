@@ -18,13 +18,8 @@ import static cc.isotopestudio.WTP.WTP.warpData;
 import static cc.isotopestudio.WTP.gui.WarpGUI.keys;
 
 public class UpdateWlist extends BukkitRunnable {
-    private final WTP plugin;
 
-    public UpdateWlist(WTP plugin) {
-        this.plugin = plugin;
-    }
-
-    public static void updateWlist(WTP plugin) {
+    public static void updateWlist() {
         keys = warpData.getKeys(false);
         if (keys.size() != 0) {
             List<String> warpList = new ArrayList<>();
@@ -40,7 +35,7 @@ public class UpdateWlist extends BukkitRunnable {
                 int pages = amount / 7;
                 if (amount % 7 != 0)
                     pages++;
-                plugin.commandWlist.pages = pages;
+                WTP.commandWlist.pages = pages;
                 listMsg = new String[pages][9];
                 for (int page = 0; page < pages; page++) {
                     listMsg[page][0] = S.toPrefixAqua("=== 地标列表 ===");
@@ -65,17 +60,17 @@ public class UpdateWlist extends BukkitRunnable {
                     }
                     listMsg[page][8] = S.toPrefixAqua("第" + (page + 1) + "页，共" + pages + "页");
                 }
-                plugin.commandWlist.warpListMsg = listMsg;
+                WTP.commandWlist.warpListMsg = listMsg;
             }
         } else {
-            plugin.commandWlist.pages = 0;
-            plugin.commandWlist.warpListMsg = null;
+            WTP.commandWlist.pages = 0;
+            WTP.commandWlist.warpListMsg = null;
         }
     }
 
     @Override
     public void run() {
-        updateWlist(plugin);
+        updateWlist();
     }
 
 }

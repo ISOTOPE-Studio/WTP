@@ -7,8 +7,8 @@ package cc.isotopestudio.WTP.listener;
 import cc.isotopestudio.WTP.WTP;
 import cc.isotopestudio.WTP.data.WTPConfig;
 import cc.isotopestudio.WTP.data.WTPData;
+import cc.isotopestudio.WTP.data.WTPPlayers;
 import cc.isotopestudio.WTP.util.S;
-import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -20,13 +20,16 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class WaitListener implements Listener {
 
     public static Map<Player, String> renameWait = new HashMap<>();
     public static Map<Player, String> msgWait = new HashMap<>();
     public static Map<Player, String> itemWait = new HashMap<>();
+    public static Set<Player> createWait = new HashSet<>();
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
@@ -67,6 +70,35 @@ public class WaitListener implements Listener {
             WTP.econ.withdrawPlayer(player.getName(), WTPConfig.welcomeFee);
             WTPData.setMsg(msgWait.remove(player), msg);
             player.sendMessage(S.toPrefixGreen("成功添加欢迎信息！"));
+        } else if (createWait.remove(player)) {
+            event.setCancelled(true);
+            if (msg.contains("cancel")) {
+                player.sendMessage(S.toPrefixRed("取消操作"));
+                return;
+            }
+            if (WTPPlayers.getPlayerSpare(player) <= 0 && WTPPlayers.getPlayerWarpLim(player) != -1) {
+                player.sendMessage(S.toPrefixRed("你不能再创建更多的地标了"));
+                return;
+            }
+            if (!msg.matches("^[a-zA-Z]*")) {
+                player.sendMessage(S.toPrefixRed("名字只能为英文字母"));
+                return;
+            }
+            if (msg.length() >= 10) {
+                player.sendMessage(S.toPrefixRed("名字不能超过十个字母"));
+                return;
+            }
+            if (WTPData.ifWarpExist(msg)) {
+                player.sendMessage(S.toPrefixRed("地标" + msg + "已经存在，换个名字吧"));
+                return;
+            }
+            if (WTP.econ.getBalance(player.getName()) < WTPConfig.createFee) {
+                player.sendMessage(S.toPrefixRed("你的金钱不足"));
+                return;
+            }
+            WTP.econ.withdrawPlayer(player.getName(), WTPConfig.createFee);
+            WTPData.addWarp(player, msg);
+            player.sendMessage(S.toPrefixGreen("成功创建！"));
         }
     }
 
