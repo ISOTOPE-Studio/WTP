@@ -196,7 +196,7 @@ public class FavoriteGUI extends GUI {
     }
 
     private void onManage(int slot) {
-        String warpName = slotIDMap.get(slot);
+        final String warpName = slotIDMap.get(slot);
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
             public void run() {
                 new ManagerGUI(player, warpName).open(player);
