@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 public final class WTP extends JavaPlugin {
-    public static final String version = "2.0.0";
+    public static final String version = "2.1.0";
     private static final String FileVersion = "2";
     public static final String prefix = (new StringBuilder()).append(ChatColor.GOLD).append("[").append(ChatColor.ITALIC)
             .append(ChatColor.BOLD).append("公共地标").append(ChatColor.RESET).append(ChatColor.GOLD).append("]")
@@ -58,7 +58,7 @@ public final class WTP extends JavaPlugin {
 
         getLogger().info("加载配置文件中");
 
-        if (!getConfig().getString("FileVersion").equals(FileVersion)) {
+        if (!config.getString("FileVersion").equals(FileVersion)) {
             getLogger().warning("公共地标 配置文件错误!");
             getLogger().warning("请更新配置文件");
             getLogger().warning("查看 http://wiki.isotopestudio.cc/doku.php?id=wtp:config");
@@ -66,7 +66,6 @@ public final class WTP extends JavaPlugin {
             return;
         }
 
-        // PluginManager pm = this.getServer().getPluginManager();
         WTPConfig.update();
         this.getCommand("w").setExecutor(new CommandW());
         commandWlist = new CommandWlist();
@@ -78,7 +77,7 @@ public final class WTP extends JavaPlugin {
 
         UpdateWlist.updateWlist();
         new UpdateWlist().runTaskTimer(this, 3000, 3000);
-        new Updater().runTaskTimer(this, 20, 60 * 60 * 20);
+        new Updater().start();
 
         try {
             Metrics metrics = new Metrics(this);
@@ -115,6 +114,5 @@ public final class WTP extends JavaPlugin {
         }
         return (econ != null);
     }
-
 
 }

@@ -176,7 +176,7 @@ public class FavoriteGUI extends GUI {
     }
 
     private void onNewWarp() {
-        if (WTP.econ.getBalance(player.getName()) < WTPConfig.createFee) {
+        if (WTP.econ.getBalance(player) < WTPConfig.createFee) {
             player.sendMessage(S.toPrefixRed("ÄãµÄ½ðÇ®²»×ã"));
             return;
         }

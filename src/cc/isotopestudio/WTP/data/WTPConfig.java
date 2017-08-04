@@ -18,7 +18,7 @@ public class WTPConfig {
     public static double relocationFee;
     private static double deleteFee;
     public static double itemFee;
-    public static HashMap<String, Integer> limitation;
+    static HashMap<String, Integer> limitation;
 
     public static void update() {
         createFee = config.getDouble("Price.create");

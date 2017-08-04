@@ -10,6 +10,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import static cc.isotopestudio.WTP.WTP.plugin;
 
 public class CommandWlist implements CommandExecutor {
     public String[][] warpListMsg;
@@ -20,7 +23,12 @@ public class CommandWlist implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("wlist")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
-                new WarpGUI(player, 0).open(player);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        new WarpGUI(player, 0).open(player);
+                    }
+                }.runTaskLater(plugin, 2);
                 return true;
             }
             if (pages > 0) {

@@ -46,12 +46,4 @@ class CommandsUti {
         }
         return redeem;
     }
-
-    static String getArgsString(String[] args, int startIndex) {
-        StringBuilder string = new StringBuilder();
-        for (int i = startIndex; i < args.length; i++) {
-            string.append(args[i]).append(" ");
-        }
-        return string.toString().substring(0, string.length() - 1);
-    }
 }

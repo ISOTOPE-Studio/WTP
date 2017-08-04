@@ -7,7 +7,12 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+<<<<<<< HEAD
+    <orderEntry type="library" name="Vault" level="application" />
+    <orderEntry type="library" name="spigot-api-1.11.2-R0.1-SNAPSHOT-shaded" level="application" />
+=======
     <orderEntry type="library" name="spigot-api-1.8.8-R0.1-SNAPSHOT-shaded" level="application" />
     <orderEntry type="library" name="Vault" level="application" />
+>>>>>>> 9ba8b663bed65f17752fce16f993327fce25ae9f
   </component>
 </module>

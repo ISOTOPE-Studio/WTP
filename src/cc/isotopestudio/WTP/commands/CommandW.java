@@ -11,6 +11,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import static cc.isotopestudio.WTP.WTP.plugin;
 
 public class CommandW implements CommandExecutor {
 
@@ -23,7 +26,12 @@ public class CommandW implements CommandExecutor {
                     WTPPlayers.tpWarp(player, args[0]);
                     return true;
                 } else {
-                    new FavoriteGUI(player).open(player);
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            new FavoriteGUI(player).open(player);
+                        }
+                    }.runTaskLater(plugin,2);
                     return true;
 //                    sender.sendMessage(S.toPrefixRed("/w <µØ±êÃû×Ö>") +
 //                            ChatColor.GRAY + " - " + ChatColor.LIGHT_PURPLE +

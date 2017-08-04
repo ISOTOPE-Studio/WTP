@@ -101,7 +101,7 @@ public class PluginFile extends YamlConfiguration {
         Validate.notNull(file, "File cannot be null");
         Files.createParentDirs(file);
         String data = this.saveToString();
-        Writer writer = new OutputStreamWriter(new FileOutputStream(file));
+        Writer writer = new OutputStreamWriter(new FileOutputStream(file),"UTF-8");
         try {
             writer.write(data);
         } finally {

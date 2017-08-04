@@ -5,8 +5,6 @@
 package cc.isotopestudio.WTP.tasks;
 
 import cc.isotopestudio.WTP.WTP;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,7 +13,7 @@ import java.net.URL;
 
 import static cc.isotopestudio.WTP.WTP.plugin;
 
-public class Updater extends BukkitRunnable {
+public class Updater extends Thread {
 
     @Override
     public void run() {

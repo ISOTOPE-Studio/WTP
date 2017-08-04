@@ -37,7 +37,7 @@ public class ManagerGUI extends GUI {
     }
 
     private void onRename() {
-        if (WTP.econ.getBalance(player.getName()) < WTPConfig.aliasFee) {
+        if (WTP.econ.getBalance(player) < WTPConfig.aliasFee) {
             player.sendMessage(S.toPrefixRed("你的金钱不足"));
             return;
         }
@@ -46,7 +46,7 @@ public class ManagerGUI extends GUI {
     }
 
     private void onMsg() {
-        if (WTP.econ.getBalance(player.getName()) < WTPConfig.welcomeFee) {
+        if (WTP.econ.getBalance(player) < WTPConfig.welcomeFee) {
             player.sendMessage(S.toPrefixRed("你的金钱不足"));
             return;
         }
@@ -55,17 +55,17 @@ public class ManagerGUI extends GUI {
     }
 
     private void onRelocate() {
-        if (WTP.econ.getBalance(player.getName()) < WTPConfig.relocationFee) {
+        if (WTP.econ.getBalance(player) < WTPConfig.relocationFee) {
             player.sendMessage(S.toPrefixRed("你的金钱不足"));
             return;
         }
-        WTP.econ.withdrawPlayer(player.getName(), WTPConfig.relocationFee);
+        WTP.econ.withdrawPlayer(player, WTPConfig.relocationFee);
         WTPData.relocate(warp, player);
         player.sendMessage(S.toPrefixGreen("成功改变传送点！"));
     }
 
     private void onItem() {
-        if (WTP.econ.getBalance(player.getName()) < WTPConfig.itemFee) {
+        if (WTP.econ.getBalance(player) < WTPConfig.itemFee) {
             player.sendMessage(S.toPrefixRed("你的金钱不足"));
             return;
         }

@@ -45,11 +45,11 @@ public class WaitListener implements Listener {
                 player.sendMessage(S.toPrefixRed("别名不能超过15个字"));
                 return;
             }
-            if (WTP.econ.getBalance(player.getName()) < WTPConfig.aliasFee) {
+            if (WTP.econ.getBalance(player) < WTPConfig.aliasFee) {
                 player.sendMessage(S.toPrefixRed("你的金钱不足"));
                 return;
             }
-            WTP.econ.withdrawPlayer(player.getName(), WTPConfig.aliasFee);
+            WTP.econ.withdrawPlayer(player, WTPConfig.aliasFee);
             WTPData.setAlias(renameWait.remove(player), ChatColor.stripColor(msg));
             player.sendMessage(S.toPrefixGreen("成功添加别名！"));
         } else if (msgWait.containsKey(player)) {
@@ -63,11 +63,11 @@ public class WaitListener implements Listener {
                         S.toPrefixRed("欢迎信息不能超过30个字"));
                 return;
             }
-            if (WTP.econ.getBalance(player.getName()) < WTPConfig.welcomeFee) {
+            if (WTP.econ.getBalance(player) < WTPConfig.welcomeFee) {
                 player.sendMessage(S.toPrefixRed("你的金钱不足"));
                 return;
             }
-            WTP.econ.withdrawPlayer(player.getName(), WTPConfig.welcomeFee);
+            WTP.econ.withdrawPlayer(player, WTPConfig.welcomeFee);
             WTPData.setMsg(msgWait.remove(player), msg);
             player.sendMessage(S.toPrefixGreen("成功添加欢迎信息！"));
         } else if (createWait.remove(player)) {
@@ -92,11 +92,11 @@ public class WaitListener implements Listener {
                 player.sendMessage(S.toPrefixRed("地标" + msg + "已经存在，换个名字吧"));
                 return;
             }
-            if (WTP.econ.getBalance(player.getName()) < WTPConfig.createFee) {
+            if (WTP.econ.getBalance(player) < WTPConfig.createFee) {
                 player.sendMessage(S.toPrefixRed("你的金钱不足"));
                 return;
             }
-            WTP.econ.withdrawPlayer(player.getName(), WTPConfig.createFee);
+            WTP.econ.withdrawPlayer(player, WTPConfig.createFee);
             WTPData.addWarp(player, msg);
             player.sendMessage(S.toPrefixGreen("成功创建！"));
         }
@@ -113,11 +113,11 @@ public class WaitListener implements Listener {
                     player.sendMessage(S.toPrefixRed("取消操作"));
                     return;
                 }
-                if (WTP.econ.getBalance(player.getName()) < WTPConfig.itemFee) {
+                if (WTP.econ.getBalance(player) < WTPConfig.itemFee) {
                     player.sendMessage(S.toPrefixRed("你的金钱不足"));
                     return;
                 }
-                WTP.econ.withdrawPlayer(player.getName(), WTPConfig.itemFee);
+                WTP.econ.withdrawPlayer(player, WTPConfig.itemFee);
                 WTPData.setItem(itemWait.remove(player), item);
                 player.sendMessage(S.toPrefixGreen("成功添加物品！"));
             }
