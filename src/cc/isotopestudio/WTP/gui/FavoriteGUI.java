@@ -26,7 +26,6 @@ import java.util.Map;
 
 import static cc.isotopestudio.WTP.WTP.plugin;
 import static cc.isotopestudio.WTP.listener.WaitListener.createWait;
-import static cc.isotopestudio.WTP.listener.WaitListener.renameWait;
 
 public class FavoriteGUI extends GUI {
 
@@ -199,7 +198,7 @@ public class FavoriteGUI extends GUI {
         final String warpName = slotIDMap.get(slot);
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
             public void run() {
-                new ManagerGUI(player, warpName).open(player);
+                new ManageGUI(player, warpName).open(player);
             }
         }, 2);
     }

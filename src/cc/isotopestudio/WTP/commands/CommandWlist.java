@@ -28,7 +28,7 @@ public class CommandWlist implements CommandExecutor {
                     public void run() {
                         new WarpGUI(player, 0).open(player);
                     }
-                }.runTaskLater(plugin, 2);
+                }.runTaskLater(plugin, 5);
                 return true;
             }
             if (pages > 0) {

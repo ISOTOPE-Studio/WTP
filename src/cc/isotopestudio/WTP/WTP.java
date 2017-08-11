@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 public final class WTP extends JavaPlugin {
-    public static final String version = "2.1.0";
+    public static final String version = "2.1.1";
     private static final String FileVersion = "2";
     public static final String prefix = (new StringBuilder()).append(ChatColor.GOLD).append("[").append(ChatColor.ITALIC)
             .append(ChatColor.BOLD).append("公共地标").append(ChatColor.RESET).append(ChatColor.GOLD).append("]")

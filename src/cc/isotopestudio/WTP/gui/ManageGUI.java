@@ -19,11 +19,11 @@ import static cc.isotopestudio.WTP.listener.WaitListener.itemWait;
 import static cc.isotopestudio.WTP.listener.WaitListener.msgWait;
 import static cc.isotopestudio.WTP.listener.WaitListener.renameWait;
 
-public class ManagerGUI extends GUI {
+public class ManageGUI extends GUI {
 
     private final String warp;
 
-    ManagerGUI(Player player, String warp) {
+    ManageGUI(Player player, String warp) {
         super(S.toBoldGold("地标管理") + "[" + warp+ "]", 9, player);
         this.page = 0;
         this.warp = warp;

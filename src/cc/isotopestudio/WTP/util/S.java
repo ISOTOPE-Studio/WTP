@@ -62,6 +62,10 @@ public class S {
         return String.valueOf(ChatColor.YELLOW) + ChatColor.ITALIC + s + ChatColor.RESET;
     }
 
+    public static String toItalicGray(String s) {
+        return String.valueOf(ChatColor.GRAY) + ChatColor.ITALIC + s + ChatColor.RESET;
+    }
+
     public static String toPrefixRed(String s) {
         return prefix + ChatColor.RED + s + ChatColor.RESET;
     }

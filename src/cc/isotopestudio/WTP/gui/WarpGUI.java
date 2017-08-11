@@ -70,6 +70,7 @@ public class WarpGUI extends GUI {
                 }
                 lore.add(S.toGold("拥有者: " + WTPData.getOwner(warpName)));
                 lore.add("");
+                lore.add(S.toItalicGray("/w " + warpName));
                 lore.add(S.toItalicYellow("单击 传送"));
                 if (favorites.contains(warpName))
                     lore.add(S.toGold("个人收藏"));

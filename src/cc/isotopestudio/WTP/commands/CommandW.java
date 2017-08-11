@@ -31,7 +31,7 @@ public class CommandW implements CommandExecutor {
                         public void run() {
                             new FavoriteGUI(player).open(player);
                         }
-                    }.runTaskLater(plugin,2);
+                    }.runTaskLater(plugin,5);
                     return true;
 //                    sender.sendMessage(S.toPrefixRed("/w <µØ±êÃû×Ö>") +
 //                            ChatColor.GRAY + " - " + ChatColor.LIGHT_PURPLE +

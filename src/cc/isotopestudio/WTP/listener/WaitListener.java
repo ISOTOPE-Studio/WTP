@@ -37,38 +37,40 @@ public class WaitListener implements Listener {
         String msg = ChatColor.stripColor(event.getMessage());
         if (renameWait.containsKey(player)) {
             event.setCancelled(true);
+            String warpName = renameWait.remove(player);
             if (msg.contains("cancel")) {
                 player.sendMessage(S.toPrefixRed("取消操作"));
                 return;
             }
             if (msg.length() >= 15) {
-                player.sendMessage(S.toPrefixRed("别名不能超过15个字"));
+                player.sendMessage(S.toPrefixRed("别名不能超过15个字 请再试一次"));
+                renameWait.put(player, warpName);
                 return;
             }
-            if (WTP.econ.getBalance(player) < WTPConfig.aliasFee) {
+            if (!WTP.econ.withdrawPlayer(player, WTPConfig.aliasFee).transactionSuccess()) {
                 player.sendMessage(S.toPrefixRed("你的金钱不足"));
                 return;
             }
-            WTP.econ.withdrawPlayer(player, WTPConfig.aliasFee);
-            WTPData.setAlias(renameWait.remove(player), ChatColor.stripColor(msg));
+            WTPData.setAlias(warpName, ChatColor.stripColor(msg));
             player.sendMessage(S.toPrefixGreen("成功添加别名！"));
         } else if (msgWait.containsKey(player)) {
             event.setCancelled(true);
+            String warpName = msgWait.remove(player);
             if (msg.contains("cancel")) {
                 player.sendMessage(S.toPrefixRed("取消操作"));
                 return;
             }
             if (msg.length() >= 30) {
                 player.sendMessage(
-                        S.toPrefixRed("欢迎信息不能超过30个字"));
+                        S.toPrefixRed("欢迎信息不能超过30个字 请再试一次"));
+                msgWait.put(player, warpName);
                 return;
             }
-            if (WTP.econ.getBalance(player) < WTPConfig.welcomeFee) {
+            if (!WTP.econ.withdrawPlayer(player, WTPConfig.welcomeFee).transactionSuccess()) {
                 player.sendMessage(S.toPrefixRed("你的金钱不足"));
                 return;
             }
-            WTP.econ.withdrawPlayer(player, WTPConfig.welcomeFee);
-            WTPData.setMsg(msgWait.remove(player), msg);
+            WTPData.setMsg(warpName, msg);
             player.sendMessage(S.toPrefixGreen("成功添加欢迎信息！"));
         } else if (createWait.remove(player)) {
             event.setCancelled(true);
@@ -80,24 +82,26 @@ public class WaitListener implements Listener {
                 player.sendMessage(S.toPrefixRed("你不能再创建更多的地标了"));
                 return;
             }
-            if (!msg.matches("^[a-zA-Z]*")) {
-                player.sendMessage(S.toPrefixRed("名字只能为英文字母"));
+            if (!msg.matches("^[a-zA-Z1-9]*")) {
+                player.sendMessage(S.toPrefixRed("名字只能为英文字母 请再试一次"));
+                createWait.add(player);
                 return;
             }
             if (msg.length() >= 10) {
-                player.sendMessage(S.toPrefixRed("名字不能超过十个字母"));
+                player.sendMessage(S.toPrefixRed("名字不能超过十个字母 请再试一次"));
+                createWait.add(player);
                 return;
             }
             if (WTPData.ifWarpExist(msg)) {
-                player.sendMessage(S.toPrefixRed("地标" + msg + "已经存在，换个名字吧"));
+                player.sendMessage(S.toPrefixRed("地标" + msg + "已经存在，换个名字吧 请再试一次"));
+                createWait.add(player);
                 return;
             }
-            if (WTP.econ.getBalance(player) < WTPConfig.createFee) {
+            if (!WTP.econ.withdrawPlayer(player, WTPConfig.createFee).transactionSuccess()) {
                 player.sendMessage(S.toPrefixRed("你的金钱不足"));
                 return;
             }
-            WTP.econ.withdrawPlayer(player, WTPConfig.createFee);
-            WTPData.addWarp(player, msg);
+            WTPData.addWarp(player, msg.toLowerCase());
             player.sendMessage(S.toPrefixGreen("成功创建！"));
         }
     }
@@ -108,6 +112,7 @@ public class WaitListener implements Listener {
             final Player player = event.getPlayer();
             if (itemWait.containsKey(player)) {
                 event.setCancelled(true);
+                String warpName = itemWait.remove(player);
                 ItemStack item = event.getItem();
                 if (item == null || item.getType() == Material.AIR) {
                     player.sendMessage(S.toPrefixRed("取消操作"));
@@ -118,7 +123,7 @@ public class WaitListener implements Listener {
                     return;
                 }
                 WTP.econ.withdrawPlayer(player, WTPConfig.itemFee);
-                WTPData.setItem(itemWait.remove(player), item);
+                WTPData.setItem(warpName, item);
                 player.sendMessage(S.toPrefixGreen("成功添加物品！"));
             }
         }

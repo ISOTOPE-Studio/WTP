@@ -9,10 +9,8 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.yaml.snakeyaml.DumperOptions;
 
 import java.io.*;
-import java.lang.reflect.Field;
 
 public class PluginFile extends YamlConfiguration {
 
@@ -101,7 +99,7 @@ public class PluginFile extends YamlConfiguration {
         Validate.notNull(file, "File cannot be null");
         Files.createParentDirs(file);
         String data = this.saveToString();
-        Writer writer = new OutputStreamWriter(new FileOutputStream(file),"UTF-8");
+        Writer writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
         try {
             writer.write(data);
         } finally {
@@ -112,7 +110,7 @@ public class PluginFile extends YamlConfiguration {
     @Override
     public void load(File file) throws IOException, InvalidConfigurationException {
         Validate.notNull(file, "File cannot be null");
-        super.load(new FileInputStream(file));
+        super.load(file);
     }
 
 }
