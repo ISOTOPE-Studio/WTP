@@ -10,7 +10,6 @@ import cc.isotopestudio.WTP.commands.CommandWtp;
 import cc.isotopestudio.WTP.commands.CommandWtpadmin;
 import cc.isotopestudio.WTP.data.WTPConfig;
 import cc.isotopestudio.WTP.listener.WaitListener;
-import cc.isotopestudio.WTP.metrics.Metrics;
 import cc.isotopestudio.WTP.tasks.UpdateWlist;
 import cc.isotopestudio.WTP.tasks.Updater;
 import cc.isotopestudio.WTP.util.PluginFile;
@@ -19,11 +18,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.IOException;
 import java.util.logging.Logger;
 
 public final class WTP extends JavaPlugin {
-    public static final String version = "2.1.1";
     private static final String FileVersion = "2";
     public static final String prefix = (new StringBuilder()).append(ChatColor.GOLD).append("[").append(ChatColor.ITALIC)
             .append(ChatColor.BOLD).append("公共地标").append(ChatColor.RESET).append(ChatColor.GOLD).append("]")
@@ -78,13 +75,6 @@ public final class WTP extends JavaPlugin {
         UpdateWlist.updateWlist();
         new UpdateWlist().runTaskTimer(this, 3000, 3000);
         new Updater().start();
-
-        try {
-            Metrics metrics = new Metrics(this);
-            metrics.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         getLogger().info("WTP 公共地标 " + getDescription().getVersion() + "成功加载!");
         getLogger().info("WTP 公共地标 由ISOTOPE Studio制作!");

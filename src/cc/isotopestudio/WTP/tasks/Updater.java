@@ -24,7 +24,7 @@ public class Updater extends Thread {
 
     private static boolean hasNewVersion() {
         try {
-            String result = readUrlContent("http://wiki.isotopestudio.cc/check.php?plugin=WTP&version=" + WTP.plugin.getDescription().getVersion(), 4000);
+            String result = readUrlContent("http://www.isotopestudio.cc/check.php?plugin=WTP&version=" + WTP.plugin.getDescription().getVersion(), 4000);
             if (result.equals("yes")) {
                 return true;
             }

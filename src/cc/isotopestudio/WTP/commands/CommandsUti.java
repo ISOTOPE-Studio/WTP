@@ -14,7 +14,7 @@ class CommandsUti {
 
     static void about(CommandSender sender) {
         sender.sendMessage((new StringBuilder()).append(ChatColor.GRAY).append("---- ").append(WTP.prefix)
-                .append(ChatColor.RESET).append(ChatColor.DARK_GRAY).append(" " + WTP.version).append(ChatColor.GRAY)
+                .append(ChatColor.RESET).append(ChatColor.DARK_GRAY).append(" " + WTP.plugin.getDescription().getVersion()).append(ChatColor.GRAY)
                 .append(" ----").toString());
         sender.sendMessage((new StringBuilder()).append(ChatColor.BLUE).append(ChatColor.ITALIC).append("为服务器制作的公共地标插件")
                 .toString());
